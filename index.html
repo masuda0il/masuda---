@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スリープセット30</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>スリープセット30</h1>
+            <p class="subtitle">30日間で睡眠習慣を改善し、睡眠負債を解消するプログラム</p>
+        </header>
+
+        <main>
+            <div class="dashboard">
+                <div class="progress-section">
+                    <h2>プログラム進捗</h2>
+                    <div class="day-counter">
+                        <span id="current-day">1</span><span>/30日目</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="progress-fill"></div>
+                    </div>
+                    <div class="calendar-container">
+                        <h3>30日カレンダー</h3>
+                        <div id="program-calendar"></div>
+                    </div>
+                </div>
+
+                <div class="stats-section">
+                    <h2>睡眠統計</h2>
+                    <div class="stat-cards">
+                        <div class="stat-card">
+                            <i class="fas fa-bed"></i>
+                            <h3>平均睡眠時間</h3>
+                            <p id="avg-sleep-time">0時間</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-moon"></i>
+                            <h3>睡眠負債</h3>
+                            <p id="sleep-debt">0時間</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-star"></i>
+                            <h3>平均睡眠質</h3>
+                            <p id="avg-sleep-quality">0/5</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <h3>睡眠効率</h3>
+                            <p id="sleep-efficiency">0%</p>
+                        </div>
+                    </div>
+                    <div class="sleep-chart-container">
+                        <canvas id="sleep-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sleep-goals-section">
+                <h2>睡眠目標設定</h2>
+                <div class="goals-container">
+                    <div class="goal-card">
+                        <div class="goal-header">
+                            <i class="fas fa-bullseye"></i>
+                            <h3>睡眠時間目標</h3>
+                        </div>
+                        <div class="goal-content">
+                            <div class="goal-input-group">
+                                <label for="sleep-duration-goal">目標睡眠時間:</label>
+                                <div class="goal-input-with-unit">
+                                    <input type="number" id="sleep-duration-goal" min="5" max="12" step="0.5" value="8">
+                                    <span class="input-unit">時間</span>
+                                </div>
+                            </div>
+                            <div class="goal-progress">
+                                <label>現在の達成率:</label>
+                                <div class="goal-progress-bar">
+                                    <div id="sleep-duration-progress" class="goal-progress-fill"></div>
+                                </div>
+                                <span id="sleep-duration-percentage">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="goal-card">
+                        <div class="goal-header">
+                            <i class="fas fa-clock"></i>
+                            <h3>就寝時間目標</h3>
+                        </div>
+                        <div class="goal-content">
+                            <div class="goal-input-group">
+                                <label for="bedtime-goal">目標就寝時間:</label>
+                                <input type="time" id="bedtime-goal" value="23:00">
+                            </div>
+                            <div class="goal-progress">
+                                <label>現在の達成率:</label>
+                                <div class="goal-progress-bar">
+                                    <div id="bedtime-progress" class="goal-progress-fill"></div>
+                                </div>
+                                <span id="bedtime-percentage">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="goal-card">
+                        <div class="goal-header">
+                            <i class="fas fa-sun"></i>
+                            <h3>起床時間目標</h3>
+                        </div>
+                        <div class="goal-content">
+                            <div class="goal-input-group">
+                                <label for="wake-time-goal">目標起床時間:</label>
+                                <input type="time" id="wake-time-goal" value="07:00">
+                            </div>
+                            <div class="goal-progress">
+                                <label>現在の達成率:</label>
+                                <div class="goal-progress-bar">
+                                    <div id="wake-time-progress" class="goal-progress-fill"></div>
+                                </div>
+                                <span id="wake-time-percentage">0%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="save-goals" class="btn primary-btn">目標を保存</button>
+            </div>
+
+            <div class="daily-section">
+                <h2>本日の睡眠記録</h2>
+                <div class="date-display" id="current-date"></div>
+                
+                <div class="sleep-log-form">
+                    <div class="form-group">
+                        <label for="bed-in-time">ベッドに入った時間:</label>
+                        <input type="time" id="bed-in-time" name="bed-in-time">
+                    </div>
+                    <div class="form-group">
+                        <label for="bed-out-time">ベッドから出た時間:</label>
+                        <input type="time" id="bed-out-time" name="bed-out-time">
+                    </div>
+                    <div class="form-group">
+                        <label for="bedtime">就寝時間:</label>
+                        <input type="time" id="bedtime" name="bedtime">
+                    </div>
+                    <div class="form-group">
+                        <label for="wake-time">起床時間:</label>
+                        <input type="time" id="wake-time" name="wake-time">
+                    </div>
+                    <div class="form-group">
+                        <label for="sleep-quality">睡眠の質 (1-5):</label>
+                        <div class="rating">
+                            <i class="far fa-star" data-rating="1"></i>
+                            <i class="far fa-star" data-rating="2"></i>
+                            <i class="far fa-star" data-rating="3"></i>
+                            <i class="far fa-star" data-rating="4"></i>
+                            <i class="far fa-star" data-rating="5"></i>
+                        </div>
+                        <input type="hidden" id="sleep-quality" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="sleep-notes">メモ:</label>
+                        <textarea id="sleep-notes" rows="2" placeholder="今日の睡眠についてのメモ..."></textarea>
+                    </div>
+                    <button id="save-sleep-data" class="btn primary-btn">記録を保存</button>
+                </div>
+            </div>
+
+            <div class="tip-section">
+                <h2>本日の睡眠改善ヒント</h2>
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h3 id="tip-title">規則正しい睡眠スケジュール</h3>
+                        <p id="tip-text">毎日同じ時間に就寝し、同じ時間に起床することで、体内時計を整えましょう。週末も平日と同じリズムを保つことが重要です。</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="challenge-section">
+                <h2>本日のチャレンジ</h2>
+                <div class="challenge-card">
+                    <div class="challenge-content">
+                        <h3 id="challenge-title">就寝前のスクリーンタイムを制限する</h3>
+                        <p id="challenge-text">今日は就寝の1時間前にはすべての電子機器（スマホ、タブレット、PC）の使用を止めましょう。ブルーライトは睡眠を妨げる可能性があります。</p>
+                        <div class="challenge-complete">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="challenge-completed">
+                                <span class="checkmark"></span>
+                                チャレンジ完了
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="settings-section">
+            <button id="settings-btn" class="btn secondary-btn">
+                <i class="fas fa-cog"></i> 設定
+            </button>
+            <div id="settings-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn">&times;</span>
+                    <h2>設定</h2>
+                    <div class="form-group">
+                        <label for="ideal-sleep-time">理想の睡眠時間:</label>
+                        <input type="number" id="ideal-sleep-time" min="5" max="12" step="0.5" value="8"> 時間
+                    </div>
+                    <div class="form-group">
+                        <label for="bedtime-reminder">就寝リマインダー:</label>
+                        <input type="time" id="bedtime-reminder" value="22:00">
+                    </div>
+                    <div class="form-group">
+                        <label for="reset-program">プログラムをリセット:</label>
+                        <button id="reset-program" class="btn danger-btn">リセット</button>
+                    </div>
+                    <button id="save-settings" class="btn primary-btn">設定を保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
