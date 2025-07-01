@@ -101,7 +101,7 @@ h3 {
 #progress-fill {
     height: 100%;
     background-color: var(--primary-color);
-    width: 0%; /* Will be set dynamically by JavaScript */
+    width: 3.33%; /* 1/30 = 3.33% for day 1 */
     transition: var(--transition);
 }
 
@@ -109,11 +109,59 @@ h3 {
     margin-top: 20px;
 }
 
-#program-calendar {
+/* Month navigation */
+.month-navigation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+#current-month-display {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.month-nav-btn {
+    background-color: var(--light-color);
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.month-nav-btn:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Weekday header */
+.weekday-header {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
-    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.weekday {
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+    color: var(--dark-color);
+    padding: 5px 0;
+}
+
+/* Monthly calendar */
+.monthly-calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
 }
 
 .calendar-day {
@@ -128,12 +176,17 @@ h3 {
     transition: var(--transition);
 }
 
+.calendar-day.empty {
+    background-color: transparent;
+    cursor: default;
+}
+
 .calendar-day.active {
     background-color: var(--light-color);
     border: 2px solid var(--primary-color);
 }
 
-.calendar-day.completed {
+.calendar-day.has-data {
     background-color: var(--primary-color);
     color: white;
 }
@@ -142,6 +195,11 @@ h3 {
     background-color: var(--accent-color);
     color: white;
     font-weight: bold;
+}
+
+.calendar-day:hover:not(.empty) {
+    transform: scale(1.1);
+    box-shadow: var(--shadow);
 }
 
 /* Stats Section */
@@ -186,6 +244,68 @@ h3 {
 .sleep-chart-container {
     height: 200px;
     margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Optimal Sleep Section */
+.optimal-sleep-section {
+    background-color: #f0f8ff;
+    border-radius: var(--border-radius);
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.optimal-sleep-section h3 {
+    text-align: center;
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.optimal-sleep-cards {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.optimal-sleep-card {
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 15px;
+    text-align: center;
+    flex: 1;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+}
+
+.optimal-sleep-card:hover {
+    transform: translateY(-3px);
+}
+
+.optimal-sleep-card i {
+    font-size: 1.8rem;
+    color: var(--secondary-color);
+    margin-bottom: 8px;
+}
+
+.optimal-sleep-card h4 {
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: var(--dark-color);
+}
+
+.optimal-sleep-card p {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.optimal-sleep-note {
+    text-align: center;
+    font-size: 0.8rem;
+    color: #666;
+    font-style: italic;
+    margin-top: 5px;
 }
 
 /* Sleep Goals Section */
@@ -294,9 +414,24 @@ h3 {
 .date-display {
     text-align: center;
     font-size: 1.2rem;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     color: var(--secondary-color);
     font-weight: bold;
+}
+
+.date-selector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.date-selector input[type="date"] {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
 }
 
 .sleep-log-form {
@@ -318,6 +453,7 @@ label {
 
 input[type="time"],
 input[type="number"],
+input[type="date"],
 textarea {
     width: 100%;
     padding: 10px;
@@ -533,6 +669,10 @@ textarea {
     }
     
     .stat-cards {
+        flex-direction: column;
+    }
+    
+    .optimal-sleep-cards {
         flex-direction: column;
     }
     

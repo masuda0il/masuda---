@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="睡眠習慣を改善し、睡眠負債を解消するプログラム">
+    <meta name="theme-color" content="#3a6ea5">
+    <title>スリープセット</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='sleepen.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="manifest" href="{{ url_for('manifest') }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', filename='icons/icon.svg') }}">
+    <script src="{{ url_for('static', filename='sleepen.js') }}" defer></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>スリープセット</h1>
+            <p class="subtitle">睡眠習慣を改善し、睡眠負債を解消するプログラム</p>
+        </header>
+
+        <main>
+            <div class="dashboard">
+                <div class="progress-section">
+                    <h2>プログラム進捗</h2>
+                    <div class="day-counter">
+                        <span id="current-day">{{ current_day }}</span><span>日目</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div id="progress-fill" style="width: {{ progress_percentage }}%;"></div>
+                    </div>
+                    <div class="calendar-container">
+                        <h3>睡眠カレンダー</h3>
+                        <div class="month-navigation">
+                            <button id="prev-month" class="month-nav-btn"><i class="fas fa-chevron-left"></i></button>
+                            <div id="current-month-display">2025年6月</div>
+                            <button id="next-month" class="month-nav-btn"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <div class="weekday-header">
+                            <div class="weekday">日</div>
+                            <div class="weekday">月</div>
+                            <div class="weekday">火</div>
+                            <div class="weekday">水</div>
+                            <div class="weekday">木</div>
+                            <div class="weekday">金</div>
+                            <div class="weekday">土</div>
+                        </div>
+                        <div id="monthly-calendar" class="monthly-calendar">
+                            <!-- カレンダーの日付はJavaScriptで動的に生成 -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stats-section" id="stats-section">
+                    <h2>睡眠統計</h2>
+                    <div class="stat-cards">
+                        <div class="stat-card">
+                            <i class="fas fa-bed"></i>
+                            <h3>平均睡眠時間</h3>
+                            <p id="avg-sleep-time">{{ stats.avgSleepTime }}</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-moon"></i>
+                            <h3>睡眠負債</h3>
+                            <p id="sleep-debt">{{ stats.sleepDebt }}</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-star"></i>
+                            <h3>平均睡眠質</h3>
+                            <p id="avg-sleep-quality">{{ stats.avgSleepQuality }}</p>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <h3>睡眠効率</h3>
+                            <p id="sleep-efficiency">{{ stats.sleepEfficiency }}</p>
+                        </div>
+                    </div>
+                    <div class="sleep-chart-container">
+                        <canvas id="sleep-chart"></canvas>
+                    </div>
+                    
+                    <div class="optimal-sleep-section">
+                        <h3>あなたの最適な睡眠</h3>
+                        <div class="optimal-sleep-cards">
+                            <div class="optimal-sleep-card">
+                                <i class="fas fa-hourglass"></i>
+                                <h4>最適な睡眠時間</h4>
+                                <p id="optimal-sleep-time">{{ optimal_sleep_time }}</p>
+                            </div>
+                            <div class="optimal-sleep-card">
+                                <i class="fas fa-moon"></i>
+                                <h4>最適な就寝時間</h4>
+                                <p id="optimal-bedtime">{{ optimal_bedtime }}</p>
+                            </div>
+                            <div class="optimal-sleep-card">
+                                <i class="fas fa-sun"></i>
+                                <h4>最適な起床時間</h4>
+                                <p id="optimal-wake-time">{{ optimal_wake_time }}</p>
+                            </div>
+                        </div>
+                        <p class="optimal-sleep-note">※ これまでの睡眠記録から分析した、あなたに最適な睡眠パターンです</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sleep-goals-section">
+                <h2>睡眠目標設定</h2>
+                <form id="goals-form" action="/api/save_goals" method="post">
+                    <div class="goals-container">
+                        <div class="goal-card">
+                            <div class="goal-header">
+                                <i class="fas fa-bullseye"></i>
+                                <h3>睡眠時間目標</h3>
+                            </div>
+                            <div class="goal-content">
+                                <div class="goal-input-group">
+                                    <label for="sleep-duration-goal">目標睡眠時間:</label>
+                                    <div class="goal-input-with-unit">
+                                        <input type="number" id="sleep-duration-goal" name="duration" min="5" max="12" step="0.5" value="{{ goals.duration }}">
+                                        <span class="input-unit">時間</span>
+                                    </div>
+                                </div>
+                                <div class="goal-progress">
+                                    <label>現在の達成率:</label>
+                                    <div class="goal-progress-bar">
+                                        <div id="sleep-duration-progress" class="goal-progress-fill" style="width: {{ goals_progress.duration.percentage }}%;"></div>
+                                    </div>
+                                    <span id="sleep-duration-percentage">{{ goals_progress.duration.percentage }}%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="goal-card">
+                            <div class="goal-header">
+                                <i class="fas fa-clock"></i>
+                                <h3>就寝時間目標</h3>
+                            </div>
+                            <div class="goal-content">
+                                <div class="goal-input-group">
+                                    <label for="bedtime-goal">目標就寝時間:</label>
+                                    <input type="time" id="bedtime-goal" name="bedtime" value="{{ goals.bedtime }}">
+                                </div>
+                                <div class="goal-progress">
+                                    <label>現在の達成率:</label>
+                                    <div class="goal-progress-bar">
+                                        <div id="bedtime-progress" class="goal-progress-fill" style="width: {{ goals_progress.bedtime.percentage }}%;"></div>
+                                    </div>
+                                    <span id="bedtime-percentage">{{ goals_progress.bedtime.percentage }}%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="goal-card">
+                            <div class="goal-header">
+                                <i class="fas fa-sun"></i>
+                                <h3>起床時間目標</h3>
+                            </div>
+                            <div class="goal-content">
+                                <div class="goal-input-group">
+                                    <label for="wake-time-goal">目標起床時間:</label>
+                                    <input type="time" id="wake-time-goal" name="wake_time" value="{{ goals.wakeTime }}">
+                                </div>
+                                <div class="goal-progress">
+                                    <label>現在の達成率:</label>
+                                    <div class="goal-progress-bar">
+                                        <div id="wake-time-progress" class="goal-progress-fill" style="width: {{ goals_progress.wakeTime.percentage }}%;"></div>
+                                    </div>
+                                    <span id="wake-time-percentage">{{ goals_progress.wakeTime.percentage }}%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" id="save-goals" class="btn primary-btn">目標を保存</button>
+                </form>
+            </div>
+
+            <div class="daily-section" id="daily-section">
+                <h2>睡眠記録</h2>
+                <div class="date-display" id="current-date">{{ current_date }}</div>
+                <div class="date-selector">
+                    <label for="record-date">記録日:</label>
+                    <input type="date" id="record-date" name="record_date" value="{{ today_iso_date }}">
+                </div>
+                
+                <form id="sleep-log-form" action="/api/save_sleep_data" method="post">
+                    <input type="hidden" id="selected-date" name="selected_date" value="{{ today_iso_date }}">
+                    <div class="sleep-log-form">
+                        <div class="form-group">
+                            <label for="bed-in-time">ベッドに入った時間:</label>
+                            <input type="time" id="bed-in-time" name="bed_in_time" value="{{ today_data.bedInTime if today_data else '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="bed-out-time">ベッドから出た時間:</label>
+                            <input type="time" id="bed-out-time" name="bed_out_time" value="{{ today_data.bedOutTime if today_data else '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="bedtime">就寝時間:</label>
+                            <input type="time" id="bedtime" name="bedtime" value="{{ today_data.bedtime if today_data else '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="wake-time">起床時間:</label>
+                            <input type="time" id="wake-time" name="wake_time" value="{{ today_data.wakeTime if today_data else '' }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="sleep-quality">睡眠の質 (1-5):</label>
+                            <div class="rating">
+                                {% for i in range(1, 6) %}
+                                    <i class="{{ 'fas' if today_data and today_data.sleepQuality >= i else 'far' }} fa-star" data-rating="{{ i }}"></i>
+                                {% endfor %}
+                            </div>
+                            <input type="hidden" id="sleep-quality" name="sleep_quality" value="{{ today_data.sleepQuality if today_data else 0 }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="sleep-notes">メモ:</label>
+                            <textarea id="sleep-notes" name="notes" rows="2" placeholder="今日の睡眠についてのメモ...">{{ today_data.notes if today_data else '' }}</textarea>
+                        </div>
+                        <button type="submit" id="save-sleep-data" class="btn primary-btn">記録を保存</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="sleep-reflection-section">
+                <h2>本日の睡眠振り返り</h2>
+                <form id="reflection-form" action="/api/save_reflection" method="post">
+                    <div class="reflection-card">
+                        <div class="form-group">
+                            <label for="morning-feeling">朝の目覚め具合 (1-5):</label>
+                            <div class="rating" id="morning-feeling-rating">
+                                {% for i in range(1, 6) %}
+                                    <i class="{{ 'fas' if today_data and today_data.reflection and today_data.reflection.morningFeeling >= i else 'far' }} fa-star" data-rating="{{ i }}"></i>
+                                {% endfor %}
+                            </div>
+                            <input type="hidden" id="morning-feeling" name="morning_feeling" value="{{ today_data.reflection.morningFeeling if today_data and today_data.reflection else 0 }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="sleep-worked-well">睡眠で良かった点:</label>
+                            <textarea id="sleep-worked-well" name="worked_well" rows="2" placeholder="昨夜の睡眠で良かった点...">{{ today_data.reflection.workedWell if today_data and today_data.reflection else '' }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="sleep-improve">改善したい点:</label>
+                            <textarea id="sleep-improve" name="improve" rows="2" placeholder="睡眠で改善したい点...">{{ today_data.reflection.improve if today_data and today_data.reflection else '' }}</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="sleep-next-goal">明日の睡眠目標:</label>
+                            <textarea id="sleep-next-goal" name="next_goal" rows="2" placeholder="明日の睡眠に向けての目標...">{{ today_data.reflection.nextGoal if today_data and today_data.reflection else '' }}</textarea>
+                        </div>
+                        <button type="submit" id="save-reflection" class="btn primary-btn">振り返りを保存</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="tip-section">
+                <h2>本日の睡眠改善ヒント</h2>
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="tip-content">
+                        <h3 id="tip-title">{{ daily_tip.title }}</h3>
+                        <p id="tip-text">{{ daily_tip.text }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="challenge-section">
+                <h2>本日のチャレンジ</h2>
+                <div class="challenge-card">
+                    <div class="challenge-content">
+                        <h3 id="challenge-title">{{ daily_challenge.title }}</h3>
+                        <p id="challenge-text">{{ daily_challenge.text }}</p>
+                        <div class="challenge-complete">
+                            <form id="challenge-form" action="/api/save_sleep_data" method="post">
+                                <label class="checkbox-container">
+                                    <input type="checkbox" id="challenge-completed" name="challenge_completed" {% if today_data and today_data.challengeCompleted %}checked{% endif %}>
+                                    <span class="checkmark"></span>
+                                    チャレンジ完了
+                                </label>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sleepen-section">
+                <h2>スリープン - 夢の世界の冒険パートナー</h2>
+                <div class="sleepen-container">
+                    <div class="sleepen-avatar">
+                        <div class="sleepen-body stage-{{ sleepen.appearance.evolution_stage }}">
+                            <div class="sleepen-face">
+                                <div class="sleepen-eyes">
+                                    <div class="sleepen-eye"></div>
+                                    <div class="sleepen-eye"></div>
+                                </div>
+                                <div class="sleepen-mouth {% if sleepen.mood > 50 %}happy{% else %}sad{% endif %}"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sleepen-name-form">
+                        <input type="text" id="sleepen-name-input" value="{{ sleepen.name }}" placeholder="スリープンの名前">
+                        <button id="save-sleepen-name" class="sleepen-action-btn play">保存</button>
+                    </div>
+                    
+                    <div class="sleepen-stats">
+                        <div class="sleepen-stat">
+                            <h4>レベル</h4>
+                            <p id="sleepen-level">{{ sleepen.level }}</p>
+                        </div>
+                        <div class="sleepen-stat">
+                            <h4>経験値</h4>
+                            <p id="sleepen-exp">{{ sleepen.exp }}/{{ sleepen.level * 100 }}</p>
+                            <div class="sleepen-progress">
+                                <div class="sleepen-progress-fill" style="width: {{ (sleepen.exp / (sleepen.level * 100)) * 100 }}%;"></div>
+                            </div>
+                        </div>
+                        <div class="sleepen-stat">
+                            <h4>機嫌</h4>
+                            <p id="sleepen-mood">{{ sleepen.mood }}%</p>
+                            <div class="sleepen-progress">
+                                <div class="sleepen-progress-fill" style="width: {{ sleepen.mood }}%;"></div>
+                            </div>
+                        </div>
+                        <div class="sleepen-stat">
+                            <h4>エネルギー</h4>
+                            <p id="sleepen-energy">{{ sleepen.energy }}%</p>
+                            <div class="sleepen-progress">
+                                <div class="sleepen-progress-fill" style="width: {{ sleepen.energy }}%;"></div>
+                            </div>
+                        </div>
+                        <div class="sleepen-stat">
+                            <h4>友情度</h4>
+                            <p id="sleepen-friendship">{{ sleepen.friendship }}%</p>
+                            <div class="sleepen-progress">
+                                <div class="sleepen-progress-fill friendship" style="width: {{ sleepen.friendship }}%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sleepen-actions">
+                        <button id="play-with-sleepen" class="sleepen-action-btn play">
+                            <i class="fas fa-gamepad"></i> 一緒に遊ぶ
+                        </button>
+                        <button id="rest-sleepen" class="sleepen-action-btn rest">
+                            <i class="fas fa-bed"></i> 休ませる
+                        </button>
+                        <button id="adventure-sleepen" class="sleepen-action-btn adventure {% if sleepen.energy < 30 %}disabled{% endif %}">
+                            <i class="fas fa-hiking"></i> 冒険に出かける
+                        </button>
+                        <button id="train-sleepen" class="sleepen-action-btn train {% if not sleepen.skills %}disabled{% endif %}">
+                            <i class="fas fa-dumbbell"></i> トレーニング
+                        </button>
+                        <button id="interpret-dream" class="sleepen-action-btn interpret {% if not sleepen.skills|selectattr('name', 'equalto', '夢の解読')|list %}disabled{% endif %}">
+                            <i class="fas fa-brain"></i> 夢を解読
+                        </button>
+                    </div>
+                    
+                    <!-- Dream World Map -->
+                    <div class="dream-world-section">
+                        <h3>夢の世界マップ</h3>
+                        <div class="dream-world-map">
+                            {% if sleepen.dream_locations %}
+                                {% for location in sleepen.dream_locations %}
+                                    <div class="dream-location" data-location="{{ location.name }}">
+                                        <div class="location-icon">
+                                            {% if "神殿" in location.name %}
+                                                <i class="fas fa-landmark"></i>
+                                            {% elif "海" in location.name %}
+                                                <i class="fas fa-star"></i>
+                                            {% elif "迷宮" in location.name %}
+                                                <i class="fas fa-dungeon"></i>
+                                            {% elif "渓谷" in location.name %}
+                                                <i class="fas fa-mountain"></i>
+                                            {% elif "島" in location.name %}
+                                                <i class="fas fa-island-tropical"></i>
+                                            {% else %}
+                                                <i class="fas fa-map-marker-alt"></i>
+                                            {% endif %}
+                                        </div>
+                                        <div class="location-name">{{ location.name }}</div>
+                                        <div class="location-visits">訪問: {{ location.visits }}回</div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="no-locations">まだ夢の世界の場所を発見していません。良質な睡眠をとって冒険に出かけましょう！</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Skills Section -->
+                    <div class="sleepen-skills">
+                        <h3>習得したスキル</h3>
+                        <div class="skills-grid">
+                            {% if sleepen.skills %}
+                                {% for skill in sleepen.skills %}
+                                    <div class="skill-card">
+                                        <div class="skill-icon">
+                                            {% if "解読" in skill.name %}
+                                                <i class="fas fa-book-open"></i>
+                                            {% elif "光" in skill.name %}
+                                                <i class="fas fa-sun"></i>
+                                            {% elif "記憶" in skill.name %}
+                                                <i class="fas fa-memory"></i>
+                                            {% elif "操作" in skill.name %}
+                                                <i class="fas fa-magic"></i>
+                                            {% elif "時間" in skill.name %}
+                                                <i class="fas fa-hourglass-half"></i>
+                                            {% elif "次元" in skill.name %}
+                                                <i class="fas fa-door-open"></i>
+                                            {% else %}
+                                                <i class="fas fa-star"></i>
+                                            {% endif %}
+                                        </div>
+                                        <div class="skill-name">{{ skill.name }}</div>
+                                        <div class="skill-description">{{ skill.description }}</div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="no-skills">まだスキルを習得していません。レベルアップすると新しいスキルを習得します！</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="sleepen-adventures">
+                        <h3>最近の冒険</h3>
+                        {% if recent_adventures %}
+                            {% for adventure in recent_adventures|reverse %}
+                                <div class="adventure-card">
+                                    <div class="adventure-header">
+                                        <div class="adventure-type">{{ adventure.type }}</div>
+                                        <div class="adventure-date">{{ adventure.date.split('T')[0] }}</div>
+                                    </div>
+                                    {% if adventure.location %}
+                                    <div class="adventure-location">
+                                        <i class="fas fa-map-marker-alt"></i> {{ adventure.location }}
+                                    </div>
+                                    {% endif %}
+                                    <div class="adventure-description">{{ adventure.description }}</div>
+                                    <div class="adventure-rewards">
+                                        <div class="adventure-exp">経験値 +{{ adventure.exp_gained }}</div>
+                                        {% for item in adventure.items_found %}
+                                            <div class="adventure-item
+                                                {% if item in ["夢想の宝石", "記憶の結晶", "星空のマント", "幻影の鏡", "永遠の砂時計", "夢幻の笛"] %}rare-item{% endif %}
+                                                {% if item in ["創造主の筆", "夢の王冠", "次元の鍵", "星の心臓"] %}legendary-item{% endif %}
+                                            ">{{ item }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% else %}
+                            <p>まだ冒険に出かけていません。良質な睡眠をとって冒険に出かけましょう！</p>
+                        {% endif %}
+                    </div>
+                    
+                    {% if sleepen.dream_items %}
+                        <div class="sleepen-items">
+                            <h3>集めたアイテム</h3>
+                            <div class="items-grid">
+                                {% for item in sleepen.dream_items %}
+                                    <div class="item-card
+                                        {% if item in ["夢想の宝石", "記憶の結晶", "星空のマント", "幻影の鏡", "永遠の砂時計", "夢幻の笛"] %}rare-item{% endif %}
+                                        {% if item in ["創造主の筆", "夢の王冠", "次元の鍵", "星の心臓"] %}legendary-item{% endif %}
+                                    ">
+                                        <div class="item-icon">
+                                            {% if "石" in item or "宝石" in item %}
+                                                <i class="fas fa-gem"></i>
+                                            {% elif "花" in item %}
+                                                <i class="fas fa-seedling"></i>
+                                            {% elif "砂" in item and not "砂時計" in item %}
+                                                <i class="fas fa-hourglass"></i>
+                                            {% elif "しずく" in item %}
+                                                <i class="fas fa-tint"></i>
+                                            {% elif "欠片" in item or "心臓" in item %}
+                                                <i class="fas fa-moon"></i>
+                                            {% elif "クッション" in item or "マント" in item %}
+                                                <i class="fas fa-cloud"></i>
+                                            {% elif "砂時計" in item %}
+                                                <i class="fas fa-hourglass-half"></i>
+                                            {% elif "羽根" in item %}
+                                                <i class="fas fa-feather"></i>
+                                            {% elif "クリスタル" in item or "結晶" in item %}
+                                                <i class="fas fa-dice-d20"></i>
+                                            {% elif "鏡" in item %}
+                                                <i class="fas fa-mirror"></i>
+                                            {% elif "筆" in item %}
+                                                <i class="fas fa-paint-brush"></i>
+                                            {% elif "王冠" in item %}
+                                                <i class="fas fa-crown"></i>
+                                            {% elif "鍵" in item %}
+                                                <i class="fas fa-key"></i>
+                                            {% elif "笛" in item %}
+                                                <i class="fas fa-music"></i>
+                                            {% else %}
+                                                <i class="fas fa-star"></i>
+                                            {% endif %}
+                                        </div>
+                                        <div class="item-name">{{ item }}</div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    
+                    <!-- Dream Journal Modal -->
+                    <div id="dream-journal-modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-dream-modal">&times;</span>
+                            <h2>夢日記</h2>
+                            <form id="dream-journal-form">
+                                <div class="form-group">
+                                    <label for="dream-description">あなたの夢を教えてください:</label>
+                                    <textarea id="dream-description" rows="4" placeholder="昨夜見た夢の内容を入力してください..."></textarea>
+                                </div>
+                                <button type="submit" id="interpret-dream-btn" class="btn primary-btn">解読する</button>
+                            </form>
+                            <div id="dream-interpretation-result" class="hidden">
+                                <h3>スリープンの解読</h3>
+                                <p id="interpretation-text"></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Adventure Location Modal -->
+                    <div id="adventure-location-modal" class="modal">
+                        <div class="modal-content">
+                            <span class="close-adventure-modal">&times;</span>
+                            <h2>冒険の場所を選択</h2>
+                            <div class="adventure-locations-grid">
+                                <div class="adventure-location-card" data-location="random">
+                                    <div class="location-icon"><i class="fas fa-random"></i></div>
+                                    <div class="location-name">ランダム</div>
+                                    <div class="location-description">ランダムな場所に冒険に出かけます</div>
+                                </div>
+                                {% if sleepen.dream_locations %}
+                                    {% for location in sleepen.dream_locations %}
+                                        <div class="adventure-location-card" data-location="{{ location.name }}">
+                                            <div class="location-icon">
+                                                {% if "神殿" in location.name %}
+                                                    <i class="fas fa-landmark"></i>
+                                                {% elif "海" in location.name %}
+                                                    <i class="fas fa-star"></i>
+                                                {% elif "迷宮" in location.name %}
+                                                    <i class="fas fa-dungeon"></i>
+                                                {% elif "渓谷" in location.name %}
+                                                    <i class="fas fa-mountain"></i>
+                                                {% elif "島" in location.name %}
+                                                    <i class="fas fa-island-tropical"></i>
+                                                {% else %}
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                {% endif %}
+                                            </div>
+                                            <div class="location-name">{{ location.name }}</div>
+                                            <div class="location-visits">訪問: {{ location.visits }}回</div>
+                                        </div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <button id="start-adventure-btn" class="btn primary-btn">冒険に出発</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="settings-section">
+            <button id="settings-btn" class="btn secondary-btn">
+                <i class="fas fa-cog"></i> 設定
+            </button>
+            <div id="settings-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-btn">&times;</span>
+                    <h2>設定</h2>
+                    <form id="settings-form" action="/api/save_settings" method="post">
+                        <div class="form-group">
+                            <label for="ideal-sleep-time">理想の睡眠時間:</label>
+                            <input type="number" id="ideal-sleep-time" name="ideal_sleep_time" min="5" max="12" step="0.5" value="{{ settings.idealSleepTime }}"> 時間
+                        </div>
+                        <div class="form-group">
+                            <label for="bedtime-reminder">就寝リマインダー:</label>
+                            <input type="time" id="bedtime-reminder" name="bedtime_reminder" value="{{ settings.bedtimeReminder }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="reset-program">プログラムをリセット:</label>
+                            <button type="button" id="reset-program" class="btn danger-btn">リセット</button>
+                        </div>
+                        <button type="submit" id="save-settings" class="btn primary-btn">設定を保存</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <script>
+        // Chart data from server
+        const chartData = {{ chart_data|safe }};
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize chart
+            initChart(chartData);
+            
+            // Setup event listeners
+            setupEventListeners();
+            
+            // Register service worker for PWA
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                    console.log('ServiceWorker registration successful');
+                    
+                    // Request notification permission
+                    if ('Notification' in window) {
+                        Notification.requestPermission();
+                    }
+                    
+                    // Setup background sync
+                    if ('SyncManager' in window) {
+                        registration.sync.register('sync-sleep-data');
+                    }
+                }).catch(error => {
+                    console.log('ServiceWorker registration failed: ', error);
+                });
+            }
+            
+            // Add to home screen prompt
+            let deferredPrompt;
+            window.addEventListener('beforeinstallprompt', (e) => {
+                // Prevent Chrome 67 and earlier from automatically showing the prompt
+                e.preventDefault();
+                // Stash the event so it can be triggered later
+                deferredPrompt = e;
+                
+                // Show install button or notification
+                const installButton = document.createElement('button');
+                installButton.textContent = 'アプリをインストール';
+                installButton.classList.add('btn', 'primary-btn');
+                installButton.style.position = 'fixed';
+                installButton.style.bottom = '20px';
+                installButton.style.right = '20px';
+                installButton.style.zIndex = '1000';
+                
+                installButton.addEventListener('click', (e) => {
+                    // Show the install prompt
+                    deferredPrompt.prompt();
+                    // Wait for the user to respond to the prompt
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User accepted the install prompt');
+                        } else {
+                            console.log('User dismissed the install prompt');
+                        }
+                        deferredPrompt = null;
+                        installButton.remove();
+                    });
+                });
+                
+                document.body.appendChild(installButton);
+            });
+            
+            // Handle offline/online status
+            window.addEventListener('online', () => {
+                console.log('Back online, syncing data...');
+                if ('serviceWorker' in navigator && 'SyncManager' in window) {
+                    navigator.serviceWorker.ready.then(registration => {
+                        registration.sync.register('sync-sleep-data');
+                    });
+                }
+                
+                // Sync with server
+                fetch('/api/sync', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        sleepData: JSON.parse(localStorage.getItem('sleepData') || '[]'),
+                        currentDay: parseInt(localStorage.getItem('currentDay') || '1'),
+                        settings: JSON.parse(localStorage.getItem('settings') || '{}')
+                    })
+                }).then(response => response.json())
+                  .then(data => {
+                      if (data.success) {
+                          console.log('Data synced successfully');
+                          window.location.reload();
+                      }
+                  }).catch(error => {
+                      console.error('Error syncing data:', error);
+                  });
+            });
+            
+            window.addEventListener('offline', () => {
+                console.log('Offline mode activated');
+                // Show offline notification to user
+                const offlineNotification = document.createElement('div');
+                offlineNotification.textContent = 'オフライン状態です。データは再接続時に同期されます。';
+                offlineNotification.style.position = 'fixed';
+                offlineNotification.style.top = '0';
+                offlineNotification.style.left = '0';
+                offlineNotification.style.right = '0';
+                offlineNotification.style.backgroundColor = '#fdcb6e';
+                offlineNotification.style.color = '#2d3436';
+                offlineNotification.style.padding = '10px';
+                offlineNotification.style.textAlign = 'center';
+                offlineNotification.style.zIndex = '1001';
+                
+                document.body.appendChild(offlineNotification);
+                
+                // Remove notification when back online
+                window.addEventListener('online', () => {
+                    offlineNotification.remove();
+                }, { once: true });
+            });
+        });
+        
+        // Initialize the sleep chart
+        function initChart(data) {
+            const ctx = document.getElementById('sleep-chart').getContext('2d');
+            
+            const sleepChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.labels,
+                    datasets: [
+                        {
+                            label: '睡眠時間',
+                            data: data.sleepHours,
+                            borderColor: '#3a6ea5',
+                            backgroundColor: 'rgba(58, 110, 165, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        },
+                        {
+                            label: '睡眠の質',
+                            data: data.sleepQuality,
+                            borderColor: '#6c5ce7',
+                            backgroundColor: 'rgba(108, 92, 231, 0.1)',
+                            fill: true,
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '睡眠時間 (時間)'
+                            },
+                            suggestedMax: 10
+                        },
+                        y1: {
+                            beginAtZero: true,
+                            position: 'right',
+                            title: {
+                                display: true,
+                                text: '睡眠の質 (1-5)'
+                            },
+                            suggestedMax: 5,
+                            grid: {
+                                drawOnChartArea: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Initialize sleep data dates
+        window.sleepDataDates = {{ sleep_data_dates|safe }};
+        
+        // Generate monthly calendar
+        function generateMonthlyCalendar(year, month) {
+            const monthlyCalendar = document.getElementById('monthly-calendar');
+            const currentMonthDisplay = document.getElementById('current-month-display');
+            
+            // Clear previous calendar
+            monthlyCalendar.innerHTML = '';
+            
+            // Set current month display
+            const monthNames = ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'];
+            currentMonthDisplay.textContent = `${year}年${monthNames[month]}`;
+            
+            // Get first day of month and number of days in month
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            
+            // Add empty cells for days before first day of month
+            for (let i = 0; i < firstDay; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'calendar-day empty';
+                monthlyCalendar.appendChild(emptyCell);
+            }
+            
+            // Add cells for each day of the month
+            const today = new Date();
+            const currentYear = today.getFullYear();
+            const currentMonth = today.getMonth();
+            const currentDate = today.getDate();
+            
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateCell = document.createElement('div');
+                dateCell.className = 'calendar-day';
+                
+                // Check if this day is today
+                if (year === currentYear && month === currentMonth && day === currentDate) {
+                    dateCell.classList.add('today');
+                }
+                
+                // Format date string for data attribute (YYYY-MM-DD)
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+                dateCell.setAttribute('data-date', dateStr);
+                
+                // Add day number
+                dateCell.textContent = day;
+                
+                // Check if this day has sleep data
+                const hasSleepData = window.sleepDataDates && window.sleepDataDates.includes(dateStr);
+                if (hasSleepData) {
+                    dateCell.classList.add('has-data');
+                }
+                
+                // Add click event to view/edit sleep data for this day
+                dateCell.addEventListener('click', () => {
+                    selectDate(dateStr);
+                });
+                
+                monthlyCalendar.appendChild(dateCell);
+            }
+        }
+        
+        // Select a date for viewing/editing sleep data
+        function selectDate(dateStr) {
+            // Update record date input
+            document.getElementById('record-date').value = dateStr;
+            document.getElementById('selected-date').value = dateStr;
+            
+            // Fetch sleep data for this date
+            fetch(`/api/view_date/${dateStr}`)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        // Update form with sleep data
+                        const data = result.data;
+                        
+                        // Update form fields
+                        document.getElementById('bed-in-time').value = data.bedInTime || '';
+                        document.getElementById('bed-out-time').value = data.bedOutTime || '';
+                        document.getElementById('bedtime').value = data.bedtime || '';
+                        document.getElementById('wake-time').value = data.wakeTime || '';
+                        document.getElementById('sleep-quality').value = data.sleepQuality || 0;
+                        document.getElementById('sleep-notes').value = data.notes || '';
+                        
+                        // Update star rating
+                        const ratingStars = document.querySelectorAll('.rating i');
+                        updateStarRating(ratingStars, data.sleepQuality || 0);
+                        
+                        // Update challenge completed checkbox
+                        const challengeCheckbox = document.getElementById('challenge-completed');
+                        if (challengeCheckbox) {
+                            challengeCheckbox.checked = data.challengeCompleted || false;
+                        }
+                        
+                        // Update reflection data if exists
+                        if (data.reflection) {
+                            document.getElementById('morning-feeling').value = data.reflection.morningFeeling || 0;
+                            document.getElementById('sleep-worked-well').value = data.reflection.workedWell || '';
+                            document.getElementById('sleep-improve').value = data.reflection.improve || '';
+                            document.getElementById('sleep-next-goal').value = data.reflection.nextGoal || '';
+                            
+                            // Update morning feeling star rating
+                            const morningFeelingStars = document.querySelectorAll('#morning-feeling-rating i');
+                            updateStarRating(morningFeelingStars, data.reflection.morningFeeling || 0);
+                        }
+                        
+                        // Update date display
+                        const date = new Date(dateStr);
+                        const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' };
+                        document.getElementById('current-date').textContent = date.toLocaleDateString('ja-JP', options);
+                    } else {
+                        // Clear form for new data
+                        document.getElementById('sleep-log-form').reset();
+                        document.getElementById('reflection-form').reset();
+                        
+                        // Reset star ratings
+                        const sleepQualityStars = document.querySelectorAll('.rating i');
+                        updateStarRating(sleepQualityStars, 0);
+                        
+                        const morningFeelingStars = document.querySelectorAll('#morning-feeling-rating i');
+                        updateStarRating(morningFeelingStars, 0);
+                        
+                        // Update date display
+                        const date = new Date(dateStr);
+                        const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'short' };
+                        document.getElementById('current-date').textContent = date.toLocaleDateString('ja-JP', options);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching date data:', error);
+                });
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            // Initialize calendar
+            const today = new Date();
+            generateMonthlyCalendar(today.getFullYear(), today.getMonth());
+            
+            // Month navigation
+            document.getElementById('prev-month').addEventListener('click', () => {
+                const currentMonthText = document.getElementById('current-month-display').textContent;
+                const [year, month] = currentMonthText.match(/(\d+)年(\d+)月/).slice(1).map(Number);
+                
+                let newMonth = month - 2; // Adjust for 0-based month index
+                let newYear = year;
+                
+                if (newMonth < 0) {
+                    newMonth = 11;
+                    newYear--;
+                }
+                
+                generateMonthlyCalendar(newYear, newMonth);
+            });
+            
+            document.getElementById('next-month').addEventListener('click', () => {
+                const currentMonthText = document.getElementById('current-month-display').textContent;
+                const [year, month] = currentMonthText.match(/(\d+)年(\d+)月/).slice(1).map(Number);
+                
+                let newMonth = month; // Adjust for 0-based month index
+                let newYear = year;
+                
+                if (newMonth > 11) {
+                    newMonth = 0;
+                    newYear++;
+                }
+                
+                generateMonthlyCalendar(newYear, newMonth);
+            });
+            
+            // Record date change
+            document.getElementById('record-date').addEventListener('change', (e) => {
+                selectDate(e.target.value);
+            });
+            // Sleep quality star rating
+            const ratingStars = document.querySelectorAll('.rating i');
+            const sleepQualityInput = document.getElementById('sleep-quality');
+            
+            ratingStars.forEach(star => {
+                star.addEventListener('click', () => {
+                    const rating = parseInt(star.getAttribute('data-rating'));
+                    sleepQualityInput.value = rating;
+                    updateStarRating(ratingStars, rating);
+                });
+            });
+            
+            // Morning feeling star rating
+            const morningFeelingRatingStars = document.querySelectorAll('#morning-feeling-rating i');
+            const morningFeelingInput = document.getElementById('morning-feeling');
+            
+            morningFeelingRatingStars.forEach(star => {
+                star.addEventListener('click', () => {
+                    const rating = parseInt(star.getAttribute('data-rating'));
+                    morningFeelingInput.value = rating;
+                    updateStarRating(morningFeelingRatingStars, rating);
+                });
+            });
+            
+            // Calendar day click
+            const calendarDays = document.querySelectorAll('.calendar-day');
+            
+            calendarDays.forEach(day => {
+                day.addEventListener('click', () => {
+                    const dayNumber = parseInt(day.getAttribute('data-day'));
+                    viewDayData(dayNumber);
+                });
+            });
+            
+            // Settings modal
+            const settingsButton = document.getElementById('settings-btn');
+            const settingsModal = document.getElementById('settings-modal');
+            const closeModalButton = document.querySelector('.close-btn');
+            
+            settingsButton.addEventListener('click', () => {
+                settingsModal.style.display = "block";
+            });
+            
+            closeModalButton.addEventListener('click', () => {
+                settingsModal.style.display = "none";
+            });
+            
+            window.addEventListener('click', (event) => {
+                if (event.target === settingsModal) {
+                    settingsModal.style.display = "none";
+                }
+            });
+            
+            // Reset program
+            const resetProgramButton = document.getElementById('reset-program');
+            
+            resetProgramButton.addEventListener('click', () => {
+                if (confirm("プログラムをリセットすると、すべてのデータが消去されます。続行しますか？")) {
+                    fetch('/api/reset_program', {
+                        method: 'POST'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        window.location.reload();
+                    });
+                }
+            });
+            
+            // Challenge completed
+            const challengeCompletedCheckbox = document.getElementById('challenge-completed');
+            
+            challengeCompletedCheckbox.addEventListener('change', () => {
+                const formData = new FormData();
+                formData.append('challenge_completed', challengeCompletedCheckbox.checked ? 'on' : 'off');
+                
+                fetch('/api/save_sleep_data', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.message);
+                });
+            });
+            
+            // Form submissions with AJAX
+            const forms = document.querySelectorAll('form');
+            
+            forms.forEach(form => {
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    const formData = new FormData(form);
+                    
+                    fetch(form.action, {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        alert(data.message);
+                        if (data.success) {
+                            // Reload page to show updated data
+                            window.location.reload();
+                        }
+                    });
+                });
+            });
+        }
+        
+        // Update star rating display
+        function updateStarRating(stars, rating) {
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.remove('far');
+                    star.classList.add('fas');
+                } else {
+                    star.classList.remove('fas');
+                    star.classList.add('far');
+                }
+            });
+        }
+        
+        // View data for a specific day
+        function viewDayData(day) {
+            fetch(`/api/view_day/${day}`)
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        const data = result.data;
+                        let message = `Day ${day} データ:\n\n`;
+                        message += `就寝時間: ${data.bedtime || 'なし'}\n`;
+                        message += `起床時間: ${data.wakeTime || 'なし'}\n`;
+                        message += `睡眠時間: ${data.sleepHours ? data.sleepHours.toFixed(1) + '時間' : 'なし'}\n`;
+                        message += `睡眠の質: ${data.sleepQuality || 0}/5\n`;
+                        message += `メモ: ${data.notes || 'なし'}\n`;
+                        message += `チャレンジ完了: ${data.challengeCompleted ? 'はい' : 'いいえ'}`;
+                        
+                        // Add reflection data if exists
+                        if (data.reflection) {
+                            message += `\n\n睡眠振り返り:\n\n`;
+                            message += `朝の目覚め具合: ${data.reflection.morningFeeling || 0}/5\n`;
+                            message += `良かった点: ${data.reflection.workedWell || 'なし'}\n`;
+                            message += `改善したい点: ${data.reflection.improve || 'なし'}\n`;
+                            message += `次の目標: ${data.reflection.nextGoal || 'なし'}`;
+                        }
+                        
+                        alert(message);
+                    } else {
+                        alert(result.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching day data:', error);
+                    alert('データの取得中にエラーが発生しました。');
+                });
+        }
+    </script>
+</body>
+</html>

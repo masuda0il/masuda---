@@ -1,0 +1,25 @@
+{
+  "sleepen": {
+    "name": "スリープン",
+    "level": 1,
+    "exp": 0,
+    "mood": 100,
+    "energy": 100,
+    "dream_items": [],
+    "adventures": [],
+    "skills": [],
+    "friendship": 0,
+    "dream_locations": [],
+    "appearance": {
+      "color": "blue",
+      "accessories": [],
+      "evolution_stage": 1
+    },
+    "creation_date": "2025-06-10T17:25:00.000Z",
+    "last_interaction": "2025-06-10T17:25:00.000Z"
+  },
+  "dream_world": {
+    "visited_locations": [],
+    "special_events": []
+  }
+}

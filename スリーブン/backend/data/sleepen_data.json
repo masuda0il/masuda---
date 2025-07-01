@@ -1,0 +1,27 @@
+{
+  "name": "スリープン",
+  "level": 1,
+  "exp": 0,
+  "mood": 80,
+  "energy": 100,
+  "friendship": 50,
+  "evolutionStage": 1,
+  "skills": [],
+  "items": [
+    {
+      "id": "dream_feather",
+      "name": "夢の羽",
+      "description": "夢の世界から落ちてきた柔らかい羽。",
+      "effect": "mood+5",
+      "rarity": "common"
+    }
+  ],
+  "discoveredPlaces": [
+    {
+      "id": "dream_meadow",
+      "name": "夢の草原",
+      "description": "スリープンの故郷である美しい草原。",
+      "rewards": "common_items"
+    }
+  ]
+}

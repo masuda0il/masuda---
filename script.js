@@ -3,11 +3,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentDayElement = document.getElementById('current-day');
     const progressFillElement = document.getElementById('progress-fill');
     const programCalendarElement = document.getElementById('program-calendar');
+    const MAX_CALENDAR_DAYS = 42; // 6 weeks (6x7) for calendar display
     const currentDateElement = document.getElementById('current-date');
     const avgSleepTimeElement = document.getElementById('avg-sleep-time');
     const sleepDebtElement = document.getElementById('sleep-debt');
     const avgSleepQualityElement = document.getElementById('avg-sleep-quality');
     const sleepEfficiencyElement = document.getElementById('sleep-efficiency');
+    const optimalSleepTimeElement = document.getElementById('optimal-sleep-time');
+    const optimalBedtimeElement = document.getElementById('optimal-bedtime');
+    const optimalWakeTimeElement = document.getElementById('optimal-wake-time');
     
     // Sleep Goals Elements
     const sleepDurationGoalInput = document.getElementById('sleep-duration-goal');
@@ -28,6 +32,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const sleepNotesInput = document.getElementById('sleep-notes');
     const saveSleepDataButton = document.getElementById('save-sleep-data');
     const ratingStars = document.querySelectorAll('.rating i');
+    
+    // Sleep Reflection Elements
+    const morningFeelingInput = document.getElementById('morning-feeling');
+    const morningFeelingRatingStars = document.querySelectorAll('#morning-feeling-rating i');
+    const sleepWorkedWellInput = document.getElementById('sleep-worked-well');
+    const sleepImproveInput = document.getElementById('sleep-improve');
+    const sleepNextGoalInput = document.getElementById('sleep-next-goal');
+    const saveReflectionButton = document.getElementById('save-reflection');
     const tipTitleElement = document.getElementById('tip-title');
     const tipTextElement = document.getElementById('tip-text');
     const challengeTitleElement = document.getElementById('challenge-title');
@@ -53,6 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
             bedtime: '23:00',
             wakeTime: '07:00'
         }
+    };
+    let optimalSleepData = {
+        optimalSleepTime: '8.0時間',
+        optimalBedtime: '23:00',
+        optimalWakeTime: '07:00'
     };
     let sleepChart = null;
 
@@ -183,21 +200,197 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     ];
 
+    // IndexedDB setup for offline storage
+    let db;
+    const DB_NAME = 'sleep-set-db';
+    const DB_VERSION = 1;
+    const STORE_NAME = 'sleep-data';
+    
+    function initIndexedDB() {
+        return new Promise((resolve, reject) => {
+            const request = indexedDB.open(DB_NAME, DB_VERSION);
+            
+            request.onerror = event => {
+                console.error('IndexedDB error:', event.target.error);
+                reject('IndexedDB error');
+            };
+            
+            request.onsuccess = event => {
+                db = event.target.result;
+                console.log('IndexedDB opened successfully');
+                resolve(db);
+            };
+            
+            request.onupgradeneeded = event => {
+                const db = event.target.result;
+                if (!db.objectStoreNames.contains(STORE_NAME)) {
+                    db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+                    console.log('Object store created');
+                }
+            };
+        });
+    }
+    
+    // Save data to IndexedDB
+    function saveToIndexedDB(data) {
+        return new Promise((resolve, reject) => {
+            if (!db) {
+                reject('IndexedDB not initialized');
+                return;
+            }
+            
+            const transaction = db.transaction([STORE_NAME], 'readwrite');
+            const store = transaction.objectStore(STORE_NAME);
+            
+            const request = store.put({ id: 'sleepData', ...data });
+            
+            request.onsuccess = () => {
+                console.log('Data saved to IndexedDB');
+                resolve();
+            };
+            
+            request.onerror = event => {
+                console.error('Error saving to IndexedDB:', event.target.error);
+                reject(event.target.error);
+            };
+        });
+    }
+    
+    // Load data from IndexedDB
+    function loadFromIndexedDB() {
+        return new Promise((resolve, reject) => {
+            if (!db) {
+                reject('IndexedDB not initialized');
+                return;
+            }
+            
+            const transaction = db.transaction([STORE_NAME], 'readonly');
+            const store = transaction.objectStore(STORE_NAME);
+            
+            const request = store.get('sleepData');
+            
+            request.onsuccess = event => {
+                const data = event.target.result;
+                if (data) {
+                    console.log('Data loaded from IndexedDB');
+                    resolve(data);
+                } else {
+                    console.log('No data in IndexedDB');
+                    resolve(null);
+                }
+            };
+            
+            request.onerror = event => {
+                console.error('Error loading from IndexedDB:', event.target.error);
+                reject(event.target.error);
+            };
+        });
+    }
+    
+    // Sync data with server
+    async function syncWithServer() {
+        try {
+            const data = {
+                sleepData,
+                currentDay,
+                settings
+            };
+            
+            const response = await fetch('/api/sync', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if (response.ok) {
+                const result = await response.json();
+                console.log('Data synced with server:', result);
+                
+                if (result.data) {
+                    // Update local data with merged data from server
+                    sleepData = result.data.sleepData || sleepData;
+                    currentDay = result.data.currentDay || currentDay;
+                    settings = result.data.settings || settings;
+                    
+                    // Save updated data to IndexedDB
+                    await saveToIndexedDB({
+                        sleepData,
+                        currentDay,
+                        settings
+                    });
+                    
+                    // Update UI
+                    updateUI();
+                }
+                
+                return true;
+            } else {
+                console.error('Sync failed:', response.statusText);
+                return false;
+            }
+        } catch (error) {
+            console.error('Error syncing with server:', error);
+            return false;
+        }
+    }
+    
     // Initialize the app
-    function init() {
-        loadData();
-        setupCalendar();
-        updateCurrentDate();
-        updateUI();
-        setupEventListeners();
-        initChart();
-        showDailyTipAndChallenge();
-        checkBedtimeReminder();
+    async function init() {
+        try {
+            // Initialize IndexedDB
+            await initIndexedDB();
+            
+            // Try to load data from IndexedDB first
+            const offlineData = await loadFromIndexedDB();
+            if (offlineData) {
+                sleepData = offlineData.sleepData || [];
+                currentDay = offlineData.currentDay || 1;
+                settings = offlineData.settings || {
+                    idealSleepTime: 8,
+                    bedtimeReminder: '22:00',
+                    sleepGoals: {
+                        duration: 8,
+                        bedtime: '23:00',
+                        wakeTime: '07:00'
+                    }
+                };
+            } else {
+                // Fall back to localStorage if no IndexedDB data
+                loadData();
+            }
+            
+            // Setup UI
+            setupCalendar();
+            updateCurrentDate();
+            updateUI();
+            setupEventListeners();
+            initChart();
+            showDailyTipAndChallenge();
+            checkBedtimeReminder();
+            
+            // Sync with server if online
+            if (navigator.onLine) {
+                syncWithServer();
+            }
+        } catch (error) {
+            console.error('Error initializing app:', error);
+            // Fall back to localStorage if IndexedDB fails
+            loadData();
+            setupCalendar();
+            updateCurrentDate();
+            updateUI();
+            setupEventListeners();
+            initChart();
+            showDailyTipAndChallenge();
+            checkBedtimeReminder();
+        }
     }
 
-    // Load data from localStorage
+    // Load data from localStorage (fallback)
     function loadData() {
-        const savedData = localStorage.getItem('sleepSet30Data');
+        const savedData = localStorage.getItem('sleepSetData');
         if (savedData) {
             const parsedData = JSON.parse(savedData);
             sleepData = parsedData.sleepData || [];
@@ -223,21 +416,51 @@ document.addEventListener('DOMContentLoaded', () => {
         wakeTimeGoalInput.value = settings.sleepGoals.wakeTime;
     }
 
-    // Save data to localStorage
-    function saveData() {
+    // Save data to localStorage and IndexedDB
+    async function saveData() {
         const dataToSave = {
             sleepData,
             currentDay,
             settings
         };
-        localStorage.setItem('sleepSet30Data', JSON.stringify(dataToSave));
+        
+        // Save to localStorage as fallback
+        localStorage.setItem('sleepSetData', JSON.stringify(dataToSave));
+        
+        // Save to IndexedDB if available
+        try {
+            if (db) {
+                await saveToIndexedDB(dataToSave);
+            }
+        } catch (error) {
+            console.error('Error saving to IndexedDB:', error);
+        }
+        
+        // Try to sync with server if online
+        if (navigator.onLine) {
+            try {
+                syncWithServer();
+            } catch (error) {
+                console.error('Error syncing with server:', error);
+            }
+        } else if ('serviceWorker' in navigator && 'SyncManager' in window) {
+            // Register for background sync when offline
+            navigator.serviceWorker.ready.then(registration => {
+                registration.sync.register('sync-sleep-data');
+            });
+        }
     }
 
     // Setup the 30-day calendar
     function setupCalendar() {
         programCalendarElement.innerHTML = '';
         
-        for (let i = 1; i <= 30; i++) {
+        // Calculate how many days to show in the calendar
+        // Show at least current day + 14 more days, rounded up to fill grid rows
+        const minDaysToShow = Math.max(currentDay + 14, 28); // At least 28 days (4 weeks)
+        const daysToShow = Math.min(MAX_CALENDAR_DAYS, minDaysToShow);
+        
+        for (let i = 1; i <= daysToShow; i++) {
             const dayElement = document.createElement('div');
             dayElement.classList.add('calendar-day');
             dayElement.textContent = i;
@@ -270,7 +493,9 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateUI() {
         // Update day counter and progress
         currentDayElement.textContent = currentDay;
-        const progressPercentage = ((currentDay - 1) / 30) * 100;
+        // Calculate progress based on completed days vs total recorded days
+        const totalDays = sleepData.length > 0 ? Math.max(currentDay, sleepData.length) : currentDay;
+        const progressPercentage = Math.min(((currentDay - 1) / totalDays) * 100, 100);
         progressFillElement.style.width = `${progressPercentage}%`;
         
         // Update sleep stats
@@ -353,7 +578,10 @@ document.addEventListener('DOMContentLoaded', () => {
         saveData();
         updateSleepGoalsProgress();
         
-        alert('睡眠目標が保存されました！');
+        const message = navigator.onLine ?
+            '睡眠目標が保存されました！' :
+            '睡眠目標がオフラインで保存されました。再接続時に同期されます。';
+        alert(message);
     }
 
     // Calculate and update sleep statistics
@@ -363,6 +591,9 @@ document.addEventListener('DOMContentLoaded', () => {
             sleepDebtElement.textContent = '0時間';
             avgSleepQualityElement.textContent = '0/5';
             sleepEfficiencyElement.textContent = '0%';
+            optimalSleepTimeElement.textContent = '8.0時間';
+            optimalBedtimeElement.textContent = '23:00';
+            optimalWakeTimeElement.textContent = '07:00';
             return;
         }
         
@@ -373,11 +604,20 @@ document.addEventListener('DOMContentLoaded', () => {
         let recordedDays = 0;
         let efficiencyRecordedDays = 0;
         
+        // For optimal sleep time analysis
+        let qualitySleepHours = [];  // List of (sleep_hours, sleep_quality) tuples
+        
         sleepData.forEach(day => {
             if (day.sleepHours) {
                 totalSleepHours += day.sleepHours;
-                totalSleepQuality += day.sleepQuality;
+                const sleepQuality = day.sleepQuality || 0;
+                totalSleepQuality += sleepQuality;
                 recordedDays++;
+                
+                // Store sleep hours and quality for analysis
+                if (sleepQuality > 0) {  // Only consider days with quality ratings
+                    qualitySleepHours.push({hours: day.sleepHours, quality: sleepQuality});
+                }
                 
                 if (day.sleepEfficiency) {
                     totalSleepEfficiency += day.sleepEfficiency;
@@ -399,8 +639,78 @@ document.addEventListener('DOMContentLoaded', () => {
         avgSleepQualityElement.textContent = `${avgQuality.toFixed(1)}/5`;
         sleepEfficiencyElement.textContent = `${avgEfficiency.toFixed(1)}%`;
         
+        // Calculate optimal sleep time
+        analyzeOptimalSleepTime(qualitySleepHours);
+        
+        // Update optimal sleep UI
+        optimalSleepTimeElement.textContent = optimalSleepData.optimalSleepTime;
+        optimalBedtimeElement.textContent = optimalSleepData.optimalBedtime;
+        optimalWakeTimeElement.textContent = optimalSleepData.optimalWakeTime;
+        
         // Update chart
         updateChart();
+    }
+    
+    // Analyze sleep data to determine optimal sleep time
+    function analyzeOptimalSleepTime(qualitySleepHours) {
+        if (qualitySleepHours.length === 0) {
+            return;
+        }
+        
+        // Find sleep duration with highest quality
+        let bestQuality = 0;
+        let optimalDuration = 8.0;  // Default
+        
+        for (const {hours, quality} of qualitySleepHours) {
+            if (quality > bestQuality) {
+                bestQuality = quality;
+                optimalDuration = hours;
+            }
+        }
+        
+        // Find the most common bedtime and wake time for high quality sleep
+        const highQualityDays = sleepData.filter(day =>
+            day.sleepQuality >= 3 && day.bedtime && day.wakeTime);
+        
+        // Find most common bedtime and wake time in high quality days
+        const bedtimes = {};
+        const wakeTimes = {};
+        
+        for (const day of highQualityDays) {
+            bedtimes[day.bedtime] = (bedtimes[day.bedtime] || 0) + 1;
+            wakeTimes[day.wakeTime] = (wakeTimes[day.wakeTime] || 0) + 1;
+        }
+        
+        // Get most common times
+        let optimalBedtime = '23:00';  // Default
+        let optimalWakeTime = '07:00';  // Default
+        
+        if (Object.keys(bedtimes).length > 0) {
+            optimalBedtime = Object.keys(bedtimes).reduce((a, b) =>
+                bedtimes[a] > bedtimes[b] ? a : b);
+        }
+        
+        if (Object.keys(wakeTimes).length > 0) {
+            optimalWakeTime = Object.keys(wakeTimes).reduce((a, b) =>
+                wakeTimes[a] > wakeTimes[b] ? a : b);
+        }
+        
+        // If no high quality days, use the day with highest quality
+        if (highQualityDays.length === 0 && qualitySleepHours.length > 0) {
+            const bestDay = sleepData.find(day =>
+                day.sleepQuality === bestQuality && day.bedtime && day.wakeTime);
+            
+            if (bestDay) {
+                optimalBedtime = bestDay.bedtime;
+                optimalWakeTime = bestDay.wakeTime;
+            }
+        }
+        
+        optimalSleepData = {
+            optimalSleepTime: `${optimalDuration.toFixed(1)}時間`,
+            optimalBedtime: optimalBedtime,
+            optimalWakeTime: optimalWakeTime
+        };
     }
 
     // Load today's sleep data if it exists
@@ -420,6 +730,24 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Update challenge checkbox
             challengeCompletedCheckbox.checked = todayData.challengeCompleted || false;
+            
+            // Load reflection data if exists
+            if (todayData.reflection) {
+                morningFeelingInput.value = todayData.reflection.morningFeeling || 0;
+                sleepWorkedWellInput.value = todayData.reflection.workedWell || '';
+                sleepImproveInput.value = todayData.reflection.improve || '';
+                sleepNextGoalInput.value = todayData.reflection.nextGoal || '';
+                
+                // Update morning feeling star rating
+                updateMorningFeelingRating(todayData.reflection.morningFeeling);
+            } else {
+                // Reset reflection form
+                morningFeelingInput.value = 0;
+                sleepWorkedWellInput.value = '';
+                sleepImproveInput.value = '';
+                sleepNextGoalInput.value = '';
+                updateMorningFeelingRating(0);
+            }
         } else {
             // Reset form
             bedInTimeInput.value = '';
@@ -430,7 +758,69 @@ document.addEventListener('DOMContentLoaded', () => {
             sleepNotesInput.value = '';
             updateStarRating(0);
             challengeCompletedCheckbox.checked = false;
+            
+            // Reset reflection form
+            morningFeelingInput.value = 0;
+            sleepWorkedWellInput.value = '';
+            sleepImproveInput.value = '';
+            sleepNextGoalInput.value = '';
+            updateMorningFeelingRating(0);
         }
+    }
+    
+    // Update morning feeling star rating display
+    function updateMorningFeelingRating(rating) {
+        morningFeelingRatingStars.forEach((star, index) => {
+            if (index < rating) {
+                star.classList.remove('far');
+                star.classList.add('fas');
+            } else {
+                star.classList.remove('fas');
+                star.classList.add('far');
+            }
+        });
+    }
+    
+    // Save sleep reflection data
+    function saveReflection() {
+        const morningFeeling = parseInt(morningFeelingInput.value) || 0;
+        const workedWell = sleepWorkedWellInput.value;
+        const improve = sleepImproveInput.value;
+        const nextGoal = sleepNextGoalInput.value;
+        
+        // Find if data for this day already exists
+        const existingDayIndex = sleepData.findIndex(day => day.day === currentDay);
+        
+        if (existingDayIndex >= 0) {
+            // Update existing data with reflection
+            sleepData[existingDayIndex].reflection = {
+                morningFeeling,
+                workedWell,
+                improve,
+                nextGoal
+            };
+        } else {
+            // Create new day data with reflection only
+            sleepData.push({
+                day: currentDay,
+                date: new Date().toISOString(),
+                reflection: {
+                    morningFeeling,
+                    workedWell,
+                    improve,
+                    nextGoal
+                }
+            });
+        }
+        
+        // Save data
+        saveData();
+        
+        // Show success message
+        const message = navigator.onLine ?
+            '睡眠の振り返りが保存されました！' :
+            '睡眠の振り返りがオフラインで保存されました。再接続時に同期されます。';
+        alert(message);
     }
 
     // Update star rating display
@@ -506,7 +896,13 @@ document.addEventListener('DOMContentLoaded', () => {
             sleepEfficiency,
             sleepQuality,
             notes,
-            challengeCompleted
+            challengeCompleted,
+            reflection: {
+                morningFeeling: parseInt(morningFeelingInput.value) || 0,
+                workedWell: sleepWorkedWellInput.value || '',
+                improve: sleepImproveInput.value || '',
+                nextGoal: sleepNextGoalInput.value || ''
+            }
         };
         
         if (existingDayIndex >= 0) {
@@ -524,7 +920,10 @@ document.addEventListener('DOMContentLoaded', () => {
         updateSleepStats();
         
         // Show success message
-        alert('睡眠データが保存されました！');
+        const message = navigator.onLine ?
+            '睡眠データが保存されました！' :
+            '睡眠データがオフラインで保存されました。再接続時に同期されます。';
+        alert(message);
     }
 
     // View data for a specific day
@@ -532,13 +931,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const dayData = sleepData.find(d => d.day === day);
         
         if (dayData) {
-            alert(`Day ${day} データ:\n
+            let message = `Day ${day} データ:\n
 就寝時間: ${dayData.bedtime || 'なし'}\n
 起床時間: ${dayData.wakeTime || 'なし'}\n
 睡眠時間: ${dayData.sleepHours ? dayData.sleepHours.toFixed(1) + '時間' : 'なし'}\n
 睡眠の質: ${dayData.sleepQuality || 0}/5\n
 メモ: ${dayData.notes || 'なし'}\n
-チャレンジ完了: ${dayData.challengeCompleted ? 'はい' : 'いいえ'}`);
+チャレンジ完了: ${dayData.challengeCompleted ? 'はい' : 'いいえ'}`;
+            
+            // Add reflection data if exists
+            if (dayData.reflection) {
+                message += `\n\n睡眠振り返り:\n
+朝の目覚め具合: ${dayData.reflection.morningFeeling || 0}/5\n
+良かった点: ${dayData.reflection.workedWell || 'なし'}\n
+改善したい点: ${dayData.reflection.improve || 'なし'}\n
+次の目標: ${dayData.reflection.nextGoal || 'なし'}`;
+            }
+            
+            alert(message);
         } else {
             alert(`Day ${day} のデータはまだ記録されていません。`);
         }
@@ -660,7 +1070,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             // Also show alert as fallback
-            alert("就寝時間です。睡眠の準備を始めましょう。");
+            const message = "就寝時間です。睡眠の準備を始めましょう。";
+            alert(message);
         }
         
         // Check again in a minute
@@ -669,14 +1080,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Advance to the next day
     function advanceToNextDay() {
-        if (currentDay < 30) {
-            currentDay++;
-            saveData();
-            setupCalendar();
-            updateUI();
-            showDailyTipAndChallenge();
-        } else {
-            alert("おめでとうございます！30日間のプログラムが完了しました。必要に応じてリセットして再開できます。");
+        currentDay++;
+        saveData();
+        setupCalendar();
+        updateUI();
+        showDailyTipAndChallenge();
+        
+        // Show milestone messages at certain intervals
+        if (currentDay % 30 === 0) {
+            const message = `おめでとうございます！${currentDay}日間継続しました！引き続き睡眠習慣の改善を続けましょう。`;
+            alert(message);
+            
+            // Show notification if permission granted
+            if (Notification.permission === "granted") {
+                new Notification("スリープセット30", {
+                    body: message,
+                    icon: "/static/icons/icon.svg"
+                });
+            }
         }
     }
 
@@ -689,7 +1110,10 @@ document.addEventListener('DOMContentLoaded', () => {
             setupCalendar();
             updateUI();
             showDailyTipAndChallenge();
-            alert("プログラムがリセットされました。Day 1から再開します。");
+            const message = navigator.onLine ?
+                'プログラムがリセットされました。Day 1から再開します。' :
+                'プログラムがオフラインでリセットされました。再接続時に同期されます。';
+            alert(message);
         }
     }
 
@@ -704,7 +1128,10 @@ document.addEventListener('DOMContentLoaded', () => {
         // Close modal
         settingsModal.style.display = "none";
         
-        alert("設定が保存されました。");
+        const message = navigator.onLine ?
+            '設定が保存されました。' :
+            '設定がオフラインで保存されました。再接続時に同期されます。';
+        alert(message);
     }
 
     // Setup event listeners
@@ -719,7 +1146,7 @@ document.addEventListener('DOMContentLoaded', () => {
             
             if (lastSavedDay) {
                 const lastSavedDate = new Date(lastSavedDay.date);
-                const isNewDay = today.getDate() !== lastSavedDate.getDate() || 
+                const isNewDay = today.getDate() !== lastSavedDate.getDate() ||
                                 today.getMonth() !== lastSavedDate.getMonth() ||
                                 today.getFullYear() !== lastSavedDate.getFullYear();
                 
@@ -731,12 +1158,24 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
         
-        // Star rating
+        // Save reflection data
+        saveReflectionButton.addEventListener('click', saveReflection);
+        
+        // Sleep quality star rating
         ratingStars.forEach(star => {
             star.addEventListener('click', () => {
                 const rating = parseInt(star.getAttribute('data-rating'));
                 sleepQualityInput.value = rating;
                 updateStarRating(rating);
+            });
+        });
+        
+        // Morning feeling star rating
+        morningFeelingRatingStars.forEach(star => {
+            star.addEventListener('click', () => {
+                const rating = parseInt(star.getAttribute('data-rating'));
+                morningFeelingInput.value = rating;
+                updateMorningFeelingRating(rating);
             });
         });
         

@@ -1,0 +1,47 @@
+{
+  "name": "スリープセット",
+  "short_name": "スリープセット",
+  "description": "睡眠習慣を改善し、睡眠負債を解消するプログラム",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f0f5ff",
+  "theme_color": "#3a6ea5",
+  "icons": [
+    {
+      "src": "/static/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "orientation": "portrait",
+  "lang": "ja-JP",
+  "categories": ["health", "lifestyle"],
+  "screenshots": [
+    {
+      "src": "/static/screenshots/screenshot1.png",
+      "sizes": "1280x720",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "睡眠記録",
+      "url": "/#daily-section",
+      "description": "今日の睡眠を記録する"
+    },
+    {
+      "name": "統計",
+      "url": "/#stats-section",
+      "description": "睡眠統計を確認する"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}

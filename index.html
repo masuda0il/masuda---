@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="30日間で睡眠習慣を改善し、睡眠負債を解消するプログラム">
+    <meta name="theme-color" content="#3a6ea5">
     <title>スリープセット30</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/static/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/static/icons/icon.svg">
 </head>
 <body>
     <div class="container">
@@ -19,18 +23,18 @@
                 <div class="progress-section">
                     <h2>プログラム進捗</h2>
                     <div class="day-counter">
-                        <span id="current-day">1</span><span>/30日目</span>
+                        <span id="current-day">1</span><span>日目</span>
                     </div>
                     <div class="progress-bar">
                         <div id="progress-fill"></div>
                     </div>
                     <div class="calendar-container">
-                        <h3>30日カレンダー</h3>
+                        <h3>睡眠カレンダー</h3>
                         <div id="program-calendar"></div>
                     </div>
                 </div>
 
-                <div class="stats-section">
+                <div class="stats-section" id="stats-section">
                     <h2>睡眠統計</h2>
                     <div class="stat-cards">
                         <div class="stat-card">
@@ -129,7 +133,7 @@
                 <button id="save-goals" class="btn primary-btn">目標を保存</button>
             </div>
 
-            <div class="daily-section">
+            <div class="daily-section" id="daily-section">
                 <h2>本日の睡眠記録</h2>
                 <div class="date-display" id="current-date"></div>
                 
@@ -166,6 +170,36 @@
                         <textarea id="sleep-notes" rows="2" placeholder="今日の睡眠についてのメモ..."></textarea>
                     </div>
                     <button id="save-sleep-data" class="btn primary-btn">記録を保存</button>
+                </div>
+            </div>
+
+            <div class="sleep-reflection-section">
+                <h2>本日の睡眠振り返り</h2>
+                <div class="reflection-card">
+                    <div class="form-group">
+                        <label for="morning-feeling">朝の目覚め具合 (1-5):</label>
+                        <div class="rating" id="morning-feeling-rating">
+                            <i class="far fa-star" data-rating="1"></i>
+                            <i class="far fa-star" data-rating="2"></i>
+                            <i class="far fa-star" data-rating="3"></i>
+                            <i class="far fa-star" data-rating="4"></i>
+                            <i class="far fa-star" data-rating="5"></i>
+                        </div>
+                        <input type="hidden" id="morning-feeling" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="sleep-worked-well">睡眠で良かった点:</label>
+                        <textarea id="sleep-worked-well" rows="2" placeholder="昨夜の睡眠で良かった点..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="sleep-improve">改善したい点:</label>
+                        <textarea id="sleep-improve" rows="2" placeholder="睡眠で改善したい点..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="sleep-next-goal">明日の睡眠目標:</label>
+                        <textarea id="sleep-next-goal" rows="2" placeholder="明日の睡眠に向けての目標..."></textarea>
+                    </div>
+                    <button id="save-reflection" class="btn primary-btn">振り返りを保存</button>
                 </div>
             </div>
 
@@ -227,6 +261,97 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="script.js"></script>
+    <script src="/script.js"></script>
+    
+    <!-- Service Worker Registration for PWA Support -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js').then(registration => {
+                    console.log('ServiceWorker registration successful');
+                    
+                    // Request notification permission
+                    if ('Notification' in window) {
+                        Notification.requestPermission();
+                    }
+                    
+                    // Setup background sync
+                    if ('SyncManager' in window) {
+                        registration.sync.register('sync-sleep-data');
+                    }
+                }).catch(error => {
+                    console.log('ServiceWorker registration failed: ', error);
+                });
+            });
+        }
+        
+        // Add to home screen prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent Chrome 67 and earlier from automatically showing the prompt
+            e.preventDefault();
+            // Stash the event so it can be triggered later
+            deferredPrompt = e;
+            
+            // Show install button or notification
+            const installButton = document.createElement('button');
+            installButton.textContent = 'アプリをインストール';
+            installButton.classList.add('btn', 'primary-btn');
+            installButton.style.position = 'fixed';
+            installButton.style.bottom = '20px';
+            installButton.style.right = '20px';
+            installButton.style.zIndex = '1000';
+            
+            installButton.addEventListener('click', (e) => {
+                // Show the install prompt
+                deferredPrompt.prompt();
+                // Wait for the user to respond to the prompt
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the install prompt');
+                    } else {
+                        console.log('User dismissed the install prompt');
+                    }
+                    deferredPrompt = null;
+                    installButton.remove();
+                });
+            });
+            
+            document.body.appendChild(installButton);
+        });
+        
+        // Handle offline/online status
+        window.addEventListener('online', () => {
+            console.log('Back online, syncing data...');
+            if ('serviceWorker' in navigator && 'SyncManager' in window) {
+                navigator.serviceWorker.ready.then(registration => {
+                    registration.sync.register('sync-sleep-data');
+                });
+            }
+        });
+        
+        window.addEventListener('offline', () => {
+            console.log('Offline mode activated');
+            // Show offline notification to user
+            const offlineNotification = document.createElement('div');
+            offlineNotification.textContent = 'オフライン状態です。データは再接続時に同期されます。';
+            offlineNotification.style.position = 'fixed';
+            offlineNotification.style.top = '0';
+            offlineNotification.style.left = '0';
+            offlineNotification.style.right = '0';
+            offlineNotification.style.backgroundColor = '#fdcb6e';
+            offlineNotification.style.color = '#2d3436';
+            offlineNotification.style.padding = '10px';
+            offlineNotification.style.textAlign = 'center';
+            offlineNotification.style.zIndex = '1001';
+            
+            document.body.appendChild(offlineNotification);
+            
+            // Remove notification when back online
+            window.addEventListener('online', () => {
+                offlineNotification.remove();
+            }, { once: true });
+        });
+    </script>
 </body>
 </html>
