@@ -1,6 +1,6 @@
 {
   "sleepData": [],
-  "currentDay": 32,
+  "currentDay": 1,
   "settings": {
     "idealSleepTime": 8,
     "bedtimeReminder": "22:00",
@@ -8,6 +8,7 @@
       "duration": 8.0,
       "bedtime": "23:00",
       "wakeTime": "07:00"
-    }
+    },
+    "startDate": "2025-07-01"
   }
 }

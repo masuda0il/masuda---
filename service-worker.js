@@ -42,38 +42,7 @@ self.addEventListener('activate', event => {
   );
 });
 
-// Fetch event - serve from cache or network
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        // Cache hit - return response
-        if (response) {
-          return response;
-        }
-        
-        // Clone the request
-        const fetchRequest = event.request.clone();
-        
-        return fetch(fetchRequest).then(response => {
-          // Check if valid response
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
-          }
-          
-          // Clone the response
-          const responseToCache = response.clone();
-          
-          caches.open(CACHE_NAME)
-            .then(cache => {
-              cache.put(event.request, responseToCache);
-            });
-            
-          return response;
-        });
-      })
-  );
-});
+// Handle offline functionality with improved caching strategy
 
 // Background sync for offline data
 self.addEventListener('sync', event => {
@@ -135,9 +104,14 @@ async function saveOfflineData(data) {
   console.log('Saving synced data locally:', data);
 }
 
-// Handle offline functionality with improved caching strategy
+// Fetch event - handle caching with proper filtering
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
+  
+  // Skip caching for non-http(s) schemes (e.g., chrome-extension)
+  if (!event.request.url.startsWith('http')) {
+    return;
+  }
   
   // Handle API requests
   if (url.pathname.startsWith('/api/')) {
@@ -192,8 +166,8 @@ self.addEventListener('fetch', event => {
       }
       
       return fetch(event.request).then(response => {
-        // Don't cache non-successful responses
-        if (!response || response.status !== 200) {
+        // Don't cache non-successful responses or non-basic responses
+        if (!response || response.status !== 200 || response.type !== 'basic') {
           return response;
         }
         

@@ -27,6 +27,7 @@ SLEEPEN_DATA_FILE = 'sleepen_data.json'
 DEFAULT_SETTINGS = {
     'idealSleepTime': 8,
     'bedtimeReminder': '22:00',
+    'startDate': datetime.datetime.now().strftime('%Y-%m-%d'),  # Set today as default start date
     'sleepGoals': {
         'duration': 8,
         'bedtime': '23:00',
@@ -197,6 +198,25 @@ def calculate_sleep_hours(bedtime, wake_time):
     else:
         # Overnight sleep (e.g., 23:00 to 07:00)
         return (24 - bedtime_decimal) + wake_decimal
+
+def calculate_current_day(start_date):
+    """Calculate current day number based on start date"""
+    if not start_date:
+        return 1
+    
+    try:
+        # Parse start date and normalize to date only (no time)
+        start = datetime.datetime.strptime(start_date, '%Y-%m-%d').date()
+        today = datetime.datetime.now().date()
+        
+        # Calculate the difference in days
+        delta = today - start
+        current_day = delta.days + 1  # Start from day 1
+        
+        # Ensure current day is at least 1 (handle future dates)
+        return max(1, current_day)
+    except (ValueError, TypeError):
+        return 1
 
 def is_time_equal_or_earlier(time1, time2):
     """Compare times (HH:MM format)"""
@@ -423,8 +443,21 @@ def index():
     data = load_data()
     
     sleep_data = data['sleepData']
-    current_day = data['currentDay']
     settings = data['settings']
+    
+    # Initialize start date if not set
+    if 'startDate' not in settings or not settings['startDate']:
+        settings['startDate'] = datetime.datetime.now().strftime('%Y-%m-%d')
+        data['settings'] = settings
+        save_data(data)
+    
+    # Always recalculate current day based on start date
+    calculated_day = calculate_current_day(settings['startDate'])
+    if calculated_day != data['currentDay']:
+        data['currentDay'] = calculated_day
+        save_data(data)
+    
+    current_day = data['currentDay']
     
     # Get today's data if exists
     today = datetime.datetime.now()
@@ -457,6 +490,9 @@ def index():
     sleepen_manager = SleepenManager(SLEEPEN_DATA_FILE)
     sleepen = sleepen_manager.get_sleepen()
     
+    # Calculate Sleepen progress percentages
+    sleepen_exp_percentage = (sleepen.exp / (sleepen.level * 100)) * 100 if sleepen.level > 0 else 0
+    
     # Get recent adventures
     recent_adventures = sleepen.adventures[-3:] if sleepen.adventures else []
     
@@ -482,6 +518,7 @@ def index():
                            optimal_bedtime=stats.get('optimalBedtime', '23:00'),
                            optimal_wake_time=stats.get('optimalWakeTime', '07:00'),
                            sleepen=sleepen,
+                           sleepen_exp_percentage=sleepen_exp_percentage,
                            recent_adventures=recent_adventures)
 
 @app.route('/api/sync', methods=['POST'])
@@ -652,6 +689,13 @@ def save_settings():
     
     data['settings']['idealSleepTime'] = float(form_data.get('ideal_sleep_time', 8))
     data['settings']['bedtimeReminder'] = form_data.get('bedtime_reminder', '22:00')
+    
+    # Handle start date setting
+    start_date = form_data.get('start_date')
+    if start_date:
+        data['settings']['startDate'] = start_date
+        # Recalculate current day based on start date
+        data['currentDay'] = calculate_current_day(start_date)
     
     save_data(data)
     
