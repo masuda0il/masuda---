@@ -108,7 +108,7 @@ def index():
     # Get all dates with sleep data for the calendar
     sleep_data_dates = sleep_collection.get_all_dates()
     
-    return render_template('index.html',
+    return render_template('index_tabbed.html',
                            current_day=current_day,
                            progress_percentage=progress_percentage,
                            current_date=current_date,
