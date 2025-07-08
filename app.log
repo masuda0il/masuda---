@@ -583,3 +583,180 @@
 2025-07-01 18:00:26,708 - werkzeug - INFO - 127.0.0.1 - - [01/Jul/2025 18:00:26] "GET / HTTP/1.1" 200 -
 2025-07-01 18:00:26,710 - werkzeug - INFO - 127.0.0.1 - - [01/Jul/2025 18:00:26] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
 2025-07-01 18:00:42,189 - werkzeug - INFO - 127.0.0.1 - - [01/Jul/2025 18:00:42] "GET /api/view_date/2025-07-03 HTTP/1.1" 200 -
+2025-07-08 17:03:53,995 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-07-08 17:03:53,996 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-08 17:03:53,997 - werkzeug - INFO -  * Restarting with stat
+2025-07-08 17:03:54,109 - werkzeug - WARNING -  * Debugger is active!
+2025-07-08 17:03:54,115 - werkzeug - INFO -  * Debugger PIN: 410-477-756
+2025-07-08 17:03:57,788 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:03:57] "GET /service-worker.js HTTP/1.1" 200 -
+2025-07-08 17:03:57,797 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:03:57] "GET /service-worker.js HTTP/1.1" 200 -
+2025-07-08 17:03:57,805 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:03:57] "[33mGET /static/icons/icon.svg HTTP/1.1[0m" 404 -
+2025-07-08 17:03:57,805 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:03:57] "GET /static/style.css HTTP/1.1" 200 -
+2025-07-08 17:03:57,812 - __main__ - INFO - Data saved successfully. Current day: 8
+2025-07-08 17:03:57,843 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:03:57] "GET / HTTP/1.1" 200 -
+2025-07-08 17:04:44,820 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2025-07-08 17:04:44,820 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-08 17:04:44,820 - werkzeug - INFO -  * Restarting with stat
+2025-07-08 17:04:44,902 - werkzeug - WARNING -  * Debugger is active!
+2025-07-08 17:04:44,906 - werkzeug - INFO -  * Debugger PIN: 410-477-756
+2025-07-08 17:04:45,963 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:04:45] "GET / HTTP/1.1" 200 -
+2025-07-08 17:04:45,974 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:04:45] "[33mGET /static/sleepen.css HTTP/1.1[0m" 404 -
+2025-07-08 17:04:45,982 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:04:45] "[33mGET /static/sleepen.js HTTP/1.1[0m" 404 -
+2025-07-08 17:04:45,983 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:04:45] "GET /static/style.css HTTP/1.1" 200 -
+2025-07-08 17:04:45,983 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:04:45] "GET /static/js/main.js HTTP/1.1" 200 -
+2025-07-08 17:04:45,986 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:04:45] "GET /static/js/events.js HTTP/1.1" 200 -
+2025-07-08 17:04:45,986 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:04:45] "[33mGET /static/sleepen.js HTTP/1.1[0m" 404 -
+2025-07-08 17:04:45,987 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:04:45] "GET /static/js/main.js HTTP/1.1" 200 -
+2025-07-08 17:04:45,987 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:04:45] "GET /static/js/calendar.js HTTP/1.1" 200 -
+2025-07-08 17:04:45,991 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:04:45] "GET /static/js/events.js HTTP/1.1" 200 -
+2025-07-08 17:04:46,015 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:04:46] "GET /static/js/calendar.js HTTP/1.1" 200 -
+2025-07-08 17:04:46,057 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:04:46] "GET /service-worker.js HTTP/1.1" 200 -
+2025-07-08 17:04:46,067 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:04:46] "GET / HTTP/1.1" 200 -
+2025-07-08 17:04:46,068 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:04:46] "[33mGET /static/icons/icon.svg HTTP/1.1[0m" 404 -
+2025-07-08 17:04:46,069 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:04:46] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-07-08 17:04:46,093 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:04:46] "GET /manifest.json HTTP/1.1" 200 -
+2025-07-08 17:04:46,094 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:04:46] "[33mGET /static/icons/icon-192x192.png HTTP/1.1[0m" 404 -
+2025-07-08 17:04:46,306 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:04:46] "GET /service-worker.js HTTP/1.1" 200 -
+2025-07-08 17:08:34,313 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:34] "GET / HTTP/1.1" 200 -
+2025-07-08 17:08:34,334 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:34] "[33mGET /static/sleepen.css HTTP/1.1[0m" 404 -
+2025-07-08 17:08:34,336 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:34] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:34,340 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:34] "[36mGET /static/js/calendar.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:34,344 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:34] "[36mGET /static/js/events.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:34,344 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:34] "GET /static/style.css HTTP/1.1" 200 -
+2025-07-08 17:08:34,346 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:34] "[33mGET /static/sleepen.js HTTP/1.1[0m" 404 -
+2025-07-08 17:08:34,373 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:34] "[36mGET /service-worker.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:34,382 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:34] "[33mGET /static/icons/icon.svg HTTP/1.1[0m" 404 -
+2025-07-08 17:08:34,383 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:34] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-07-08 17:08:34,385 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:34] "GET / HTTP/1.1" 200 -
+2025-07-08 17:08:34,406 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:34] "[36mGET /manifest.json HTTP/1.1[0m" 304 -
+2025-07-08 17:08:34,407 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:34] "GET /favicon.ico HTTP/1.1" 200 -
+2025-07-08 17:08:34,408 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:34] "[33mGET /static/icons/icon-192x192.png HTTP/1.1[0m" 404 -
+2025-07-08 17:08:43,671 - app.services.data_service - INFO - Data saved successfully. Current day: 1
+2025-07-08 17:08:43,672 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:43] "POST /api/reset_program HTTP/1.1" 200 -
+2025-07-08 17:08:44,476 - app.services.data_service - INFO - Data saved successfully. Current day: 8
+2025-07-08 17:08:44,478 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "GET / HTTP/1.1" 200 -
+2025-07-08 17:08:44,492 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "[33mGET /static/sleepen.css HTTP/1.1[0m" 404 -
+2025-07-08 17:08:44,493 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-07-08 17:08:44,494 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:44,494 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "[36mGET /static/js/calendar.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:44,496 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "[33mGET /static/sleepen.js HTTP/1.1[0m" 404 -
+2025-07-08 17:08:44,497 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "[36mGET /static/js/events.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:44,501 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "[33mGET /static/sleepen.js HTTP/1.1[0m" 404 -
+2025-07-08 17:08:44,503 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:44,504 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "[36mGET /static/js/calendar.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:44,504 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "[36mGET /static/js/events.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:44,511 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "[36mGET /service-worker.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:44,520 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "[33mGET /static/icons/icon.svg HTTP/1.1[0m" 404 -
+2025-07-08 17:08:44,521 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-07-08 17:08:44,522 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "GET / HTTP/1.1" 200 -
+2025-07-08 17:08:44,528 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "[36mGET /manifest.json HTTP/1.1[0m" 304 -
+2025-07-08 17:08:44,528 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "[36mGET /favicon.ico HTTP/1.1[0m" 304 -
+2025-07-08 17:08:44,529 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "[33mGET /static/icons/icon-192x192.png HTTP/1.1[0m" 404 -
+2025-07-08 17:08:44,794 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:44] "[36mGET /service-worker.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:47,590 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "GET / HTTP/1.1" 200 -
+2025-07-08 17:08:47,602 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "[33mGET /static/sleepen.css HTTP/1.1[0m" 404 -
+2025-07-08 17:08:47,603 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-07-08 17:08:47,604 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:47,606 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "[36mGET /static/js/calendar.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:47,607 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "[33mGET /static/sleepen.js HTTP/1.1[0m" 404 -
+2025-07-08 17:08:47,609 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "[36mGET /static/js/events.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:47,609 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:47,611 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "[36mGET /static/js/calendar.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:47,612 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "[33mGET /static/sleepen.js HTTP/1.1[0m" 404 -
+2025-07-08 17:08:47,613 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "[36mGET /static/js/events.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:47,622 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "[36mGET /service-worker.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:47,630 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "[33mGET /static/icons/icon.svg HTTP/1.1[0m" 404 -
+2025-07-08 17:08:47,630 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "GET /static/style.css HTTP/1.1" 200 -
+2025-07-08 17:08:47,631 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "GET / HTTP/1.1" 200 -
+2025-07-08 17:08:47,633 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "[36mGET /manifest.json HTTP/1.1[0m" 304 -
+2025-07-08 17:08:47,633 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "[36mGET /favicon.ico HTTP/1.1[0m" 304 -
+2025-07-08 17:08:47,634 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "[33mGET /static/icons/icon-192x192.png HTTP/1.1[0m" 404 -
+2025-07-08 17:08:47,642 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:47] "[36mGET /service-worker.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:50,909 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "GET / HTTP/1.1" 200 -
+2025-07-08 17:08:50,925 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-07-08 17:08:50,925 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "[33mGET /static/sleepen.css HTTP/1.1[0m" 404 -
+2025-07-08 17:08:50,928 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:50,928 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "[36mGET /static/js/calendar.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:50,929 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "[33mGET /static/sleepen.js HTTP/1.1[0m" 404 -
+2025-07-08 17:08:50,930 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "[36mGET /static/js/events.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:50,934 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "[33mGET /static/sleepen.js HTTP/1.1[0m" 404 -
+2025-07-08 17:08:50,935 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:50,936 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "[36mGET /static/js/calendar.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:50,937 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "[36mGET /static/js/events.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:50,943 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "[36mGET /service-worker.js HTTP/1.1[0m" 304 -
+2025-07-08 17:08:50,949 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "[33mGET /static/icons/icon.svg HTTP/1.1[0m" 404 -
+2025-07-08 17:08:50,949 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "GET /static/style.css HTTP/1.1" 200 -
+2025-07-08 17:08:50,950 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "GET / HTTP/1.1" 200 -
+2025-07-08 17:08:50,957 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "[36mGET /manifest.json HTTP/1.1[0m" 304 -
+2025-07-08 17:08:50,958 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "[36mGET /favicon.ico HTTP/1.1[0m" 304 -
+2025-07-08 17:08:50,959 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "[33mGET /static/icons/icon-192x192.png HTTP/1.1[0m" 404 -
+2025-07-08 17:08:50,968 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:08:50] "[36mGET /service-worker.js HTTP/1.1[0m" 304 -
+2025-07-08 17:09:06,310 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:06] "GET / HTTP/1.1" 200 -
+2025-07-08 17:09:06,326 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:06] "GET /static/style.css HTTP/1.1" 200 -
+2025-07-08 17:09:06,327 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:06] "[33mGET /static/sleepen.css HTTP/1.1[0m" 404 -
+2025-07-08 17:09:06,329 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:06] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-07-08 17:09:06,331 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:06] "[36mGET /static/js/calendar.js HTTP/1.1[0m" 304 -
+2025-07-08 17:09:06,331 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:06] "[36mGET /static/js/events.js HTTP/1.1[0m" 304 -
+2025-07-08 17:09:06,332 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:06] "[33mGET /static/sleepen.js HTTP/1.1[0m" 404 -
+2025-07-08 17:09:06,346 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:06] "[36mGET /service-worker.js HTTP/1.1[0m" 304 -
+2025-07-08 17:09:06,352 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:06] "[33mGET /static/icons/icon.svg HTTP/1.1[0m" 404 -
+2025-07-08 17:09:06,352 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:06] "GET /static/style.css HTTP/1.1" 200 -
+2025-07-08 17:09:06,353 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:06] "GET / HTTP/1.1" 200 -
+2025-07-08 17:09:06,361 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:06] "[36mGET /favicon.ico HTTP/1.1[0m" 304 -
+2025-07-08 17:09:06,361 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:06] "[36mGET /manifest.json HTTP/1.1[0m" 304 -
+2025-07-08 17:09:06,363 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:06] "[33mGET /static/icons/icon-192x192.png HTTP/1.1[0m" 404 -
+2025-07-08 17:09:53,893 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:53] "GET / HTTP/1.1" 200 -
+2025-07-08 17:09:53,910 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:53] "[33mGET /static/sleepen.css HTTP/1.1[0m" 404 -
+2025-07-08 17:09:53,910 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:53] "[33mGET /static/sleepen.js HTTP/1.1[0m" 404 -
+2025-07-08 17:09:53,913 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:53] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-07-08 17:09:53,914 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:53] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-07-08 17:09:53,914 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:53] "[36mGET /static/js/calendar.js HTTP/1.1[0m" 304 -
+2025-07-08 17:09:53,915 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:53] "[36mGET /static/js/events.js HTTP/1.1[0m" 304 -
+2025-07-08 17:09:53,927 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:53] "[36mGET /service-worker.js HTTP/1.1[0m" 304 -
+2025-07-08 17:09:53,933 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:53] "[33mGET /static/icons/icon.svg HTTP/1.1[0m" 404 -
+2025-07-08 17:09:53,934 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:53] "GET / HTTP/1.1" 200 -
+2025-07-08 17:09:53,935 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:53] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-07-08 17:09:53,941 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:53] "[36mGET /favicon.ico HTTP/1.1[0m" 304 -
+2025-07-08 17:09:53,941 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:53] "[36mGET /manifest.json HTTP/1.1[0m" 304 -
+2025-07-08 17:09:53,943 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:09:53] "[33mGET /static/icons/icon-192x192.png HTTP/1.1[0m" 404 -
+2025-07-08 17:13:21,934 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2025-07-08 17:13:21,934 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-08 17:13:21,934 - werkzeug - INFO -  * Restarting with stat
+2025-07-08 17:13:22,025 - werkzeug - WARNING -  * Debugger is active!
+2025-07-08 17:13:22,030 - werkzeug - INFO -  * Debugger PIN: 410-477-756
+2025-07-08 17:13:24,199 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:13:24] "GET / HTTP/1.1" 200 -
+2025-07-08 17:13:24,215 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:13:24] "[36mGET /static/js/calendar.js HTTP/1.1[0m" 304 -
+2025-07-08 17:13:24,215 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:13:24] "GET /static/sleepen.css HTTP/1.1" 200 -
+2025-07-08 17:13:24,218 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:13:24] "GET /static/style.css HTTP/1.1" 200 -
+2025-07-08 17:13:24,218 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:13:24] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-07-08 17:13:24,218 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:13:24] "[36mGET /static/js/events.js HTTP/1.1[0m" 304 -
+2025-07-08 17:13:24,219 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:13:24] "[33mGET /static/sleepen.js HTTP/1.1[0m" 404 -
+2025-07-08 17:13:24,271 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:13:24] "[36mGET /service-worker.js HTTP/1.1[0m" 304 -
+2025-07-08 17:13:24,276 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:13:24] "[33mGET /static/icons/icon.svg HTTP/1.1[0m" 404 -
+2025-07-08 17:13:24,277 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:13:24] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-07-08 17:13:24,278 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:13:24] "GET / HTTP/1.1" 200 -
+2025-07-08 17:13:24,305 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:13:24] "[36mGET /manifest.json HTTP/1.1[0m" 304 -
+2025-07-08 17:13:24,307 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:13:24] "[33mGET /static/icons/icon-192x192.png HTTP/1.1[0m" 404 -
+2025-07-08 17:14:08,148 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:14:08] "GET /api/view_date/2025-07-10 HTTP/1.1" 200 -
+2025-07-08 17:17:53,013 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5001
+2025-07-08 17:17:53,013 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-07-08 17:17:53,013 - werkzeug - INFO -  * Restarting with stat
+2025-07-08 17:17:53,097 - werkzeug - WARNING -  * Debugger is active!
+2025-07-08 17:17:53,101 - werkzeug - INFO -  * Debugger PIN: 410-477-756
+2025-07-08 17:18:25,044 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:18:25] "GET / HTTP/1.1" 200 -
+2025-07-08 17:18:25,059 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:18:25] "[33mGET /static/sleepen.js HTTP/1.1[0m" 404 -
+2025-07-08 17:18:25,060 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:18:25] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-07-08 17:18:25,061 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:18:25] "[36mGET /static/js/calendar.js HTTP/1.1[0m" 304 -
+2025-07-08 17:18:25,063 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:18:25] "[36mGET /static/js/events.js HTTP/1.1[0m" 304 -
+2025-07-08 17:18:25,064 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:18:25] "[36mGET /static/sleepen.css HTTP/1.1[0m" 304 -
+2025-07-08 17:18:25,065 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:18:25] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-07-08 17:18:25,124 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:18:25] "[36mGET /service-worker.js HTTP/1.1[0m" 304 -
+2025-07-08 17:18:25,129 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:18:25] "[33mGET /static/icons/icon.svg HTTP/1.1[0m" 404 -
+2025-07-08 17:18:25,130 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:18:25] "[36mGET /static/style.css HTTP/1.1[0m" 304 -
+2025-07-08 17:18:25,130 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:18:25] "GET / HTTP/1.1" 200 -
+2025-07-08 17:18:25,157 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:18:25] "[36mGET /manifest.json HTTP/1.1[0m" 304 -
+2025-07-08 17:18:25,158 - werkzeug - INFO - 127.0.0.1 - - [08/Jul/2025 17:18:25] "[33mGET /static/icons/icon-192x192.png HTTP/1.1[0m" 404 -

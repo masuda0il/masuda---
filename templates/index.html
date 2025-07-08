@@ -16,16 +16,31 @@
 <body>
     <div class="container">
         <header>
-            <h1>スリープセット</h1>
-            <p class="subtitle">睡眠習慣を改善し、睡眠負債を解消するプログラム</p>
+            <div class="header-content">
+                <h1>スリープセット</h1>
+                <p class="subtitle">睡眠習慣を改善し、睡眠負債を解消するプログラム</p>
+                <div class="header-stats">
+                    <div class="header-stat">
+                        <i class="fas fa-calendar-day"></i>
+                        <span>{{ current_date }}</span>
+                    </div>
+                    <div class="header-stat">
+                        <i class="fas fa-trophy"></i>
+                        <span>{{ current_day }}日目</span>
+                    </div>
+                </div>
+            </div>
         </header>
 
         <main>
             <div class="dashboard">
                 <div class="progress-section">
-                    <h2>プログラム進捗</h2>
+                    <div class="section-header">
+                        <h2><i class="fas fa-chart-line"></i> プログラム進捗</h2>
+                    </div>
                     <div class="day-counter">
                         <span id="current-day">{{ current_day }}</span><span>日目</span>
+                        <div class="progress-percentage">{{ "%.1f" | format(progress_percentage) }}%</div>
                     </div>
                     <div class="progress-bar">
                         <div id="progress-fill" style="width: {{ progress_percentage }}%;"></div>
@@ -53,27 +68,45 @@
                 </div>
 
                 <div class="stats-section" id="stats-section">
-                    <h2>睡眠統計</h2>
+                    <div class="section-header">
+                        <h2><i class="fas fa-chart-bar"></i> 睡眠統計</h2>
+                    </div>
                     <div class="stat-cards">
                         <div class="stat-card">
-                            <i class="fas fa-bed"></i>
-                            <h3>平均睡眠時間</h3>
-                            <p id="avg-sleep-time">{{ stats.avgSleepTime }}</p>
+                            <div class="stat-icon">
+                                <i class="fas fa-bed"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>平均睡眠時間</h3>
+                                <p id="avg-sleep-time">{{ stats.avgSleepTime }}</p>
+                            </div>
                         </div>
                         <div class="stat-card">
-                            <i class="fas fa-moon"></i>
-                            <h3>睡眠負債</h3>
-                            <p id="sleep-debt">{{ stats.sleepDebt }}</p>
+                            <div class="stat-icon">
+                                <i class="fas fa-moon"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>睡眠負債</h3>
+                                <p id="sleep-debt">{{ stats.sleepDebt }}</p>
+                            </div>
                         </div>
                         <div class="stat-card">
-                            <i class="fas fa-star"></i>
-                            <h3>平均睡眠質</h3>
-                            <p id="avg-sleep-quality">{{ stats.avgSleepQuality }}</p>
+                            <div class="stat-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>平均睡眠質</h3>
+                                <p id="avg-sleep-quality">{{ stats.avgSleepQuality }}</p>
+                            </div>
                         </div>
                         <div class="stat-card">
-                            <i class="fas fa-tachometer-alt"></i>
-                            <h3>睡眠効率</h3>
-                            <p id="sleep-efficiency">{{ stats.sleepEfficiency }}</p>
+                            <div class="stat-icon">
+                                <i class="fas fa-tachometer-alt"></i>
+                            </div>
+                            <div class="stat-content">
+                                <h3>睡眠効率</h3>
+                                <p id="sleep-efficiency">{{ stats.sleepEfficiency }}</p>
+                            </div>
                         </div>
                     </div>
                     <div class="sleep-chart-container">
@@ -81,22 +114,36 @@
                     </div>
                     
                     <div class="optimal-sleep-section">
-                        <h3>あなたの最適な睡眠</h3>
+                        <div class="section-header">
+                            <h3><i class="fas fa-bullseye"></i> あなたの最適な睡眠</h3>
+                        </div>
                         <div class="optimal-sleep-cards">
                             <div class="optimal-sleep-card">
-                                <i class="fas fa-hourglass"></i>
-                                <h4>最適な睡眠時間</h4>
-                                <p id="optimal-sleep-time">{{ optimal_sleep_time }}</p>
+                                <div class="optimal-icon">
+                                    <i class="fas fa-hourglass"></i>
+                                </div>
+                                <div class="optimal-content">
+                                    <h4>最適な睡眠時間</h4>
+                                    <p id="optimal-sleep-time">{{ optimal_sleep_time }}</p>
+                                </div>
                             </div>
                             <div class="optimal-sleep-card">
-                                <i class="fas fa-moon"></i>
-                                <h4>最適な就寝時間</h4>
-                                <p id="optimal-bedtime">{{ optimal_bedtime }}</p>
+                                <div class="optimal-icon">
+                                    <i class="fas fa-moon"></i>
+                                </div>
+                                <div class="optimal-content">
+                                    <h4>最適な就寝時間</h4>
+                                    <p id="optimal-bedtime">{{ optimal_bedtime }}</p>
+                                </div>
                             </div>
                             <div class="optimal-sleep-card">
-                                <i class="fas fa-sun"></i>
-                                <h4>最適な起床時間</h4>
-                                <p id="optimal-wake-time">{{ optimal_wake_time }}</p>
+                                <div class="optimal-icon">
+                                    <i class="fas fa-sun"></i>
+                                </div>
+                                <div class="optimal-content">
+                                    <h4>最適な起床時間</h4>
+                                    <p id="optimal-wake-time">{{ optimal_wake_time }}</p>
+                                </div>
                             </div>
                         </div>
                         <p class="optimal-sleep-note">※ これまでの睡眠記録から分析した、あなたに最適な睡眠パターンです</p>
@@ -105,7 +152,9 @@
             </div>
 
             <div class="sleep-goals-section">
-                <h2>睡眠目標設定</h2>
+                <div class="section-header">
+                    <h2><i class="fas fa-target"></i> 睡眠目標設定</h2>
+                </div>
                 <form id="goals-form" action="/api/save_goals" method="post">
                     <div class="goals-container">
                         <div class="goal-card">
@@ -176,7 +225,9 @@
             </div>
 
             <div class="daily-section" id="daily-section">
-                <h2>睡眠記録</h2>
+                <div class="section-header">
+                    <h2><i class="fas fa-book"></i> 睡眠記録</h2>
+                </div>
                 <div class="date-display" id="current-date">{{ current_date }}</div>
                 <div class="date-selector">
                     <label for="record-date">記録日:</label>
@@ -221,7 +272,9 @@
             </div>
 
             <div class="sleep-reflection-section">
-                <h2>本日の睡眠振り返り</h2>
+                <div class="section-header">
+                    <h2><i class="fas fa-mirror"></i> 本日の睡眠振り返り</h2>
+                </div>
                 <form id="reflection-form" action="/api/save_reflection" method="post">
                     <div class="reflection-card">
                         <div class="form-group">
@@ -251,7 +304,9 @@
             </div>
 
             <div class="tip-section">
-                <h2>本日の睡眠改善ヒント</h2>
+                <div class="section-header">
+                    <h2><i class="fas fa-lightbulb"></i> 本日の睡眠改善ヒント</h2>
+                </div>
                 <div class="tip-card">
                     <div class="tip-icon">
                         <i class="fas fa-lightbulb"></i>
@@ -264,8 +319,13 @@
             </div>
 
             <div class="challenge-section">
-                <h2>本日のチャレンジ</h2>
+                <div class="section-header">
+                    <h2><i class="fas fa-flag"></i> 本日のチャレンジ</h2>
+                </div>
                 <div class="challenge-card">
+                    <div class="challenge-icon">
+                        <i class="fas fa-flag"></i>
+                    </div>
                     <div class="challenge-content">
                         <h3 id="challenge-title">{{ daily_challenge.title }}</h3>
                         <p id="challenge-text">{{ daily_challenge.text }}</p>
@@ -283,7 +343,9 @@
             </div>
 
             <div class="sleepen-section">
-                <h2>スリープン - 夢の世界の冒険パートナー</h2>
+                <div class="section-header">
+                    <h2><i class="fas fa-dragon"></i> スリープン - 夢の世界の冒険パートナー</h2>
+                </div>
                 <div class="sleepen-container">
                     <div class="sleepen-avatar">
                         <div class="sleepen-body stage-{{ sleepen.appearance.evolution_stage }}">
@@ -563,13 +625,15 @@
         </main>
 
         <div class="settings-section">
-            <button id="settings-btn" class="btn secondary-btn">
+            <button id="settings-btn" class="btn secondary-btn settings-btn">
                 <i class="fas fa-cog"></i> 設定
             </button>
             <div id="settings-modal" class="modal">
                 <div class="modal-content">
                     <span class="close-btn">&times;</span>
-                    <h2>設定</h2>
+                    <div class="section-header">
+                        <h2><i class="fas fa-cog"></i> 設定</h2>
+                    </div>
                     <form id="settings-form" action="/api/save_settings" method="post">
                         <div class="form-group">
                             <label for="ideal-sleep-time">理想の睡眠時間:</label>

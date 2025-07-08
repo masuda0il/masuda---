@@ -24,48 +24,6 @@
         "items_found": [],
         "new_location_discovered": null,
         "description": "スリープンはわくわくする洞窟探索に出かけました。冒険を楽しんだようです！"
-      },
-      {
-        "date": "2025-07-01T17:10:55.166857",
-        "type": "洞窟探索",
-        "location": null,
-        "duration": 3,
-        "quality": 3,
-        "exp_gained": 42,
-        "items_found": [
-          "虹のしずく",
-          "幻想のクリスタル"
-        ],
-        "new_location_discovered": null,
-        "description": "スリープンはわくわくする洞窟探索に出かけ、虹のしずくと幻想のクリスタルを見つけました！"
-      },
-      {
-        "date": "2025-07-01T17:10:58.016776",
-        "type": "洞窟探索",
-        "location": null,
-        "duration": 6,
-        "quality": 3,
-        "exp_gained": 30,
-        "items_found": [
-          "夢の羽根",
-          "夢想の宝石"
-        ],
-        "new_location_discovered": null,
-        "description": "スリープンはわくわくする洞窟探索に出かけ、夢の羽根と夢想の宝石を見つけました！"
-      },
-      {
-        "date": "2025-07-01T17:11:05.492033",
-        "type": "森の冒険",
-        "location": null,
-        "duration": 3,
-        "quality": 3,
-        "exp_gained": 43,
-        "items_found": [
-          "幻想のクリスタル",
-          "幻想のクリスタル"
-        ],
-        "new_location_discovered": null,
-        "description": "スリープンはわくわくする森の冒険に出かけ、幻想のクリスタルと幻想のクリスタルを見つけました！"
       }
     ],
     "skills": [],

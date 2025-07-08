@@ -1,0 +1,788 @@
+/* Sleepen-specific styles */
+
+/* Sleepen Section */
+.sleepen-section {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.sleepen-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s ease;
+}
+
+.sleepen-section:hover::before {
+    left: 100%;
+}
+
+.sleepen-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+}
+
+.sleepen-section h2 {
+    color: #3a6ea5;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+    text-align: center;
+    font-weight: 700;
+}
+
+.sleepen-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+    align-items: start;
+}
+
+/* Sleepen Avatar */
+.sleepen-avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, #e8f4fd 0%, #b3d9ff 100%);
+    border-radius: 50%;
+    width: 200px;
+    height: 200px;
+    margin: 0 auto 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.sleepen-avatar:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+}
+
+.sleepen-body {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.sleepen-body.stage-1 {
+    background: linear-gradient(135deg, #87CEEB 0%, #4682B4 100%);
+}
+
+.sleepen-body.stage-2 {
+    background: linear-gradient(135deg, #9370DB 0%, #4B0082 100%);
+}
+
+.sleepen-body.stage-3 {
+    background: linear-gradient(135deg, #FFD700 0%, #FF8C00 100%);
+}
+
+.sleepen-body.stage-4 {
+    background: linear-gradient(135deg, #FF69B4 0%, #8B008B 100%);
+}
+
+.sleepen-body.stage-5 {
+    background: linear-gradient(135deg, #00CED1 0%, #008B8B 100%);
+}
+
+.sleepen-face {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 60px;
+}
+
+.sleepen-eyes {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 15px;
+}
+
+.sleepen-eye {
+    width: 16px;
+    height: 16px;
+    background: #333;
+    border-radius: 50%;
+    animation: blink 4s infinite;
+}
+
+@keyframes blink {
+    0%, 90%, 100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.1); }
+}
+
+.sleepen-mouth {
+    width: 20px;
+    height: 10px;
+    border: 2px solid #333;
+    border-radius: 0 0 20px 20px;
+    margin: 0 auto;
+    border-top: none;
+    transition: all 0.3s ease;
+}
+
+.sleepen-mouth.happy {
+    border-radius: 0 0 20px 20px;
+    transform: rotate(0deg);
+}
+
+.sleepen-mouth.sad {
+    border-radius: 20px 20px 0 0;
+    transform: rotate(180deg);
+}
+
+/* Sleepen Name Form */
+.sleepen-name-form {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.sleepen-name-form input {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid #e8f2ff;
+    border-radius: 8px;
+    font-size: 16px;
+    text-align: center;
+    background: rgba(248, 250, 252, 0.8);
+    transition: all 0.3s ease;
+}
+
+.sleepen-name-form input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Sleepen Stats */
+.sleepen-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.sleepen-stat {
+    text-align: center;
+    padding: 15px;
+    background: rgba(248, 250, 252, 0.8);
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.sleepen-stat:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: white;
+}
+
+.sleepen-stat h4 {
+    margin: 0 0 8px 0;
+    color: #555;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sleepen-stat p {
+    margin: 0;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #3a6ea5;
+}
+
+/* Sleepen Progress Bars */
+.sleepen-progress {
+    background: #e8f2ff;
+    border-radius: 10px;
+    height: 8px;
+    overflow: hidden;
+    margin-top: 8px;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.sleepen-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+    position: relative;
+}
+
+.sleepen-progress-fill.friendship {
+    background: linear-gradient(90deg, #ff6b6b 0%, #ffd93d 100%);
+}
+
+.sleepen-progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to right, rgba(255,255,255,0.3), transparent);
+    border-radius: 10px;
+}
+
+/* Sleepen Actions */
+.sleepen-actions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.sleepen-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.sleepen-action-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.sleepen-action-btn:hover::before {
+    width: 200px;
+    height: 200px;
+}
+
+.sleepen-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+}
+
+.sleepen-action-btn.play {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+}
+
+.sleepen-action-btn.rest {
+    background: linear-gradient(45deg, #4facfe, #00f2fe);
+    color: white;
+}
+
+.sleepen-action-btn.adventure {
+    background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+    color: white;
+}
+
+.sleepen-action-btn.train {
+    background: linear-gradient(45deg, #ffd93d, #ff6b6b);
+    color: white;
+}
+
+.sleepen-action-btn.interpret {
+    background: linear-gradient(45deg, #a8edea, #fed6e3);
+    color: #333;
+}
+
+.sleepen-action-btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.sleepen-action-btn.disabled:hover {
+    transform: none;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+
+/* Dream World Section */
+.dream-world-section {
+    margin-bottom: 30px;
+}
+
+.dream-world-section h3 {
+    color: #3a6ea5;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+    text-align: center;
+}
+
+.dream-world-map {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.dream-location {
+    background: rgba(248, 250, 252, 0.8);
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(102, 126, 234, 0.1);
+    cursor: pointer;
+}
+
+.dream-location:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: white;
+}
+
+.dream-location .location-icon {
+    font-size: 24px;
+    color: #667eea;
+    margin-bottom: 8px;
+}
+
+.dream-location .location-name {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.dream-location .location-visits {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.no-locations {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 20px;
+}
+
+/* Skills Section */
+.sleepen-skills {
+    margin-bottom: 30px;
+}
+
+.sleepen-skills h3 {
+    color: #3a6ea5;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+    text-align: center;
+}
+
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.skill-card {
+    background: rgba(248, 250, 252, 0.8);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.skill-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: white;
+}
+
+.skill-card .skill-icon {
+    font-size: 32px;
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+.skill-card .skill-name {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+}
+
+.skill-card .skill-description {
+    font-size: 0.9em;
+    color: #666;
+    line-height: 1.4;
+}
+
+.no-skills {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 20px;
+}
+
+/* Adventures Section */
+.sleepen-adventures {
+    margin-bottom: 30px;
+}
+
+.sleepen-adventures h3 {
+    color: #3a6ea5;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+    text-align: center;
+}
+
+.adventure-card {
+    background: rgba(248, 250, 252, 0.8);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.adventure-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: white;
+}
+
+.adventure-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.adventure-type {
+    font-weight: bold;
+    color: #667eea;
+    text-transform: uppercase;
+    font-size: 0.9em;
+}
+
+.adventure-date {
+    font-size: 0.9em;
+    color: #666;
+}
+
+.adventure-location {
+    color: #555;
+    margin-bottom: 10px;
+    font-size: 0.95em;
+}
+
+.adventure-description {
+    color: #333;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+.adventure-rewards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+.adventure-exp {
+    background: linear-gradient(45deg, #4facfe, #00f2fe);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.adventure-item {
+    background: rgba(102, 126, 234, 0.1);
+    color: #667eea;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: 500;
+}
+
+.adventure-item.rare-item {
+    background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+    color: white;
+}
+
+.adventure-item.legendary-item {
+    background: linear-gradient(45deg, #ffd93d, #ff6b6b);
+    color: white;
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 0 5px rgba(255, 215, 0, 0.5); }
+    to { box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+}
+
+/* Items Section */
+.sleepen-items {
+    margin-bottom: 30px;
+}
+
+.sleepen-items h3 {
+    color: #3a6ea5;
+    margin-bottom: 15px;
+    font-size: 1.3em;
+    text-align: center;
+}
+
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 15px;
+}
+
+.item-card {
+    background: rgba(248, 250, 252, 0.8);
+    border-radius: 12px;
+    padding: 15px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+.item-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: white;
+}
+
+.item-card.rare-item {
+    border-color: #ff6b6b;
+    background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(255, 142, 83, 0.1));
+}
+
+.item-card.legendary-item {
+    border-color: #ffd93d;
+    background: linear-gradient(135deg, rgba(255, 217, 61, 0.1), rgba(255, 107, 107, 0.1));
+    animation: legendaryGlow 3s ease-in-out infinite alternate;
+}
+
+@keyframes legendaryGlow {
+    from { box-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+    to { box-shadow: 0 0 25px rgba(255, 215, 0, 0.6); }
+}
+
+.item-card .item-icon {
+    font-size: 24px;
+    color: #667eea;
+    margin-bottom: 8px;
+}
+
+.item-card.rare-item .item-icon {
+    color: #ff6b6b;
+}
+
+.item-card.legendary-item .item-icon {
+    color: #ffd93d;
+}
+
+.item-card .item-name {
+    font-weight: bold;
+    color: #333;
+    font-size: 0.9em;
+    line-height: 1.3;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 15px;
+    width: 80%;
+    max-width: 600px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from { opacity: 0; transform: translateY(-50px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.close-dream-modal, .close-adventure-modal {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.close-dream-modal:hover, .close-adventure-modal:hover {
+    color: #333;
+    transform: rotate(90deg);
+}
+
+.hidden {
+    display: none;
+}
+
+/* Adventure Location Modal */
+.adventure-locations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.adventure-location-card {
+    background: rgba(248, 250, 252, 0.8);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    cursor: pointer;
+}
+
+.adventure-location-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: white;
+    border-color: #667eea;
+}
+
+.adventure-location-card.selected {
+    border-color: #667eea;
+    background: rgba(102, 126, 234, 0.1);
+}
+
+.adventure-location-card .location-icon {
+    font-size: 32px;
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+.adventure-location-card .location-name {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.adventure-location-card .location-description {
+    font-size: 0.9em;
+    color: #666;
+    line-height: 1.4;
+}
+
+.adventure-location-card .location-visits {
+    font-size: 0.8em;
+    color: #888;
+    margin-top: 5px;
+}
+
+/* Responsive Design for Sleepen */
+@media (max-width: 768px) {
+    .sleepen-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .sleepen-avatar {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .sleepen-body {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .sleepen-stats {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    }
+    
+    .sleepen-actions {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+    
+    .dream-world-map {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+    
+    .skills-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .items-grid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    }
+    
+    .adventure-locations-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .sleepen-section {
+        padding: 20px;
+    }
+    
+    .sleepen-avatar {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .sleepen-body {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .sleepen-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .sleepen-actions {
+        grid-template-columns: 1fr;
+    }
+}
